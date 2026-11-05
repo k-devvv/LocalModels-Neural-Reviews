@@ -1,5 +1,9 @@
 # LFM3 family: how the six models relate
 
+![skeleton](../assets/skeleton-lfm3-family.svg)
+
+[← all reviews](../README.md)
+
 Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-attention blocks, width 2,048, 1.73B params). They differ in training and in the "senses" bolted on.
 
 ## Lineage (LLM drift = mean relative change of norm gains; 0 = identical)

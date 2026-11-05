@@ -1,5 +1,9 @@
 # LFM3-Audio-2B: a look inside the layers
 
+![skeleton](../assets/skeleton-lfm3-family.svg)
+
+[← all reviews](../README.md)
+
 *Source: local GGUF files read with the `gguf` library. LLM file quant: Q6_K embeddings, 1,728,801,600 params.*
 
 ---

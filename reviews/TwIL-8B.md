@@ -1,5 +1,9 @@
 # TwIL-8B: a look inside the layers
 
+![skeleton](../assets/skeleton-twil.svg)
+
+[← all reviews](../README.md)
+
 *Source: the local file `TwIL-8B-Q4_K_M-balanced.gguf`, read directly with the `gguf` library. Norm values are exact. Weight sizes are the RMS of the first 256 rows of each matrix after un-quantizing.*
 
 ---

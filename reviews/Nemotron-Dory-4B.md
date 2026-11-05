@@ -1,5 +1,9 @@
 # Nemotron-Labs Dory 4B: a look inside the layers
 
+![skeleton](../assets/skeleton-dory.svg)
+
+[← all reviews](../README.md)
+
 *Source: local GGUF (Q5_K_M), read with the `gguf` library. 3,975M params.*
 
 ---

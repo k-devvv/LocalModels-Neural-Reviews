@@ -1,5 +1,9 @@
 # Coding QLoRA adapter (Qwen3-1.7B): a look inside the layers
 
+![skeleton](../assets/skeleton-lora.svg)
+
+[← all reviews](../README.md)
+
 *Source: `adapter_model.safetensors` (PEFT 0.21.2). Measured: Frobenius norm of ΔW = B·A·(α/r) per module, and effective rank (entropy of singular values) of `down_proj`.*
 
 ---
