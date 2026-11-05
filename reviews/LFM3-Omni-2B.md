@@ -52,7 +52,7 @@
 | **Early mix** | 2–7 | first global attention at L2; post-norms still small | first look across the whole context |
 | **Core** | 8–17 | flattest stretch; MLP gain lowest at L9 (0.138) | steady meaning-building; best place for edits |
 | **Dead-ish attention** | 18 | q/k norm only 0.113/0.120 vs ~1.0+ elsewhere | attention scores here are nearly flat, so L18 attends almost uniformly; its MLP still works |
-| **Exit** | 19–23 | post-norms and MLP gains climb; top MLP gains at L2, L1, L4, L22 | commit to the answer and shape the next token |
+| **Exit** | 19–23 | post-norms climb to their max; MLP gain peaks (whole model) at L2, L1, L4, L22 | commit to the answer and shape the next token |
 
 Other measured patterns:
 - **Conv blocks** pre-norm gain 0.139–0.204; **attention blocks** pre-norm only 0.044–0.076. Attention gets a quieter input than conv.
