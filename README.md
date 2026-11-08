@@ -98,6 +98,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | **Dory 4B** | Layers 8–27 run **4 times**, so 4B params give 192 blocks of compute. Edit outside the loop. |
 | **Coding QLoRA** | 52% of the change is in the MLP. Layer 2's `down_proj` collapsed to rank 2.3 of 16. |
 | **Qwen3.5-4B** | Linear-attention decay drops from 7–13 (layers 1–2) to 0.2–0.5 (layers 20–30): short memory early, long memory deep. Only 8 of 32 layers keep a KV cache. |
+| **Qwen3.5-4B 3D-Coder** | Every MLP shares a sink channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
 | **Phi-4-mini** | Attention is nearly off at layer 0 (0.04) and layer 31 (0.09); a smooth climb in between. |
 | **Gemma 4 E4B** | Attention gain peaks at 47 (layer 7). Layer 23's post-MLP gain of 26 is scaled down to 0.065. Layers 24–41 reuse earlier K/V. |
 
@@ -117,6 +118,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | 🟧 | **d1-Omni-2B** | LFM3 non-causal judge + vision + hearing | 1.73B + 305M | Q8_0 | [read →](reviews/d1-Omni-2B.md) |
 | 🟪 | **Coding QLoRA adapter** | LoRA r16 on Qwen3-1.7B | 17.4M | fp32 | [read →](reviews/Coding-QLoRA-adapter.md) |
 | 🟥 | **Qwen3.5-4B** | Qwen3.5 hybrid linear+full attention + vision + MTP | 4.33B + 334M | Q4_K_M / F16 | [read →](reviews/Qwen3.5-4B.md) |
+| 🟥 | **Qwen3.5-4B 3D-Coder** | Qwen3.5-4B fine-tune for 3D / Three.js code | 4.33B + 334M | F16 | [read →](reviews/Qwen3.5-4B-3D-Coder.md) |
 | 🟫 | **Phi-4-mini-instruct** | Microsoft Phi-4, dense, 32 layers | 3.84B | Q4_K_M | [read →](reviews/Phi-4-mini.md) |
 | 🟨 | **Gemma 4 E4B-it** | Gemma 4, per-layer embeddings, sliding/global, KV sharing | 7.52B (≈4B core) | Q4_K_M | [read →](reviews/Gemma-4-E4B.md) |
 
