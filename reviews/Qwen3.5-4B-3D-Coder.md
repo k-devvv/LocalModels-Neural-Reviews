@@ -138,3 +138,38 @@ Recommended edit size: top 64 neurons per target layer, `W[:,j] -= α·d(dᵀW[:
 ## 7. Verdict
 
 Same skeleton as Qwen3.5-4B, with a sharper picture of the MLPs. The weights point to **L15+16 and L19** as the surgery targets, and say clearly what not to touch: the dim-0 sink, L27 and L31. The final layer choice still needs an activation probe on real good vs bad outputs.
+
+**Update:** a behaviour test (section 8) found the failures come from verbosity, not looping, and a prompt change fixes most of them. Surgery is on hold.
+
+---
+
+## 8. Behaviour test: prompt fix before surgery
+
+50 Three.js prompts, run through Ollama on `hf.co/ccore/Qwen3.5-4B-3D-Coder:Q4_K_M` (thinking off, seed 42, temp 0.6, top_p 0.95, top_k 20, 3072-token cap, 8192 context). Each answer is scored automatically. It is **bad** if it hit the token cap, loops, has a JS syntax error (`node --check`), never closes `</html>`, or lacks a renderer + scene + camera + `render()`. **Follow** is the share of each prompt's required features present in the answer.
+
+Prompt endings tested:
+
+- **Baseline:** "Return one complete, self-contained HTML file that loads three.js from a CDN as an ES module. No explanation."
+- **Compact:** baseline + "Keep it short: under 150 lines, minimal CSS (no UI panels or decorative styling), no comments. Finish with `</html>`."
+- **Compact + code block:** baseline + the same length rules + "Put the whole file inside one ```` ```html ```` code block, with raw tags (never `&lt;` or `&gt;`), ending with `</html>` then ```` ``` ````."
+
+| | Baseline | Compact | Compact + code block |
+|---|---|---|---|
+| Good / bad | 30 / 20 | 33 / 17 | **43 / 7** |
+| Hit token cap | 17 | 2 | 2 |
+| Repeating loop | 0 | 1 | 2 |
+| JS syntax errors | 19 | 13 | 3 |
+| Missing `</html>` | 17 | 10 | 4 |
+| No render setup | 16 | 6 | 4 |
+| HTML written as `&lt;…&gt;` | 0 | 9 | 0 |
+| Missed a requirement | 17 | 11 | 13 |
+| Follow score | 0.77 | 0.83 | 0.80 |
+| Mean tokens | 2589 | 1552 | 1477 |
+
+What it shows:
+
+- **The baseline failures were verbosity, not a broken circuit.** All 17 cut-offs were mid-code (long CSS, HUD panels), with no looping. Most syntax and unclosed-HTML errors came from the cut-offs.
+- **A length limit alone caused a new bug.** In 9 answers the model wrote the page as escaped HTML with no code block. Asking for one raw ```` ```html ```` block removed it completely.
+- **What's left is small.** The only loops (lod, fireworks) happen after hitting the cap. Answers are 43% shorter. The cost is slightly weaker requirement-following than the compact prompt (0.80 vs 0.83), still above the baseline.
+
+**Updated verdict:** for this fine-tune, the prompt is the right fix. It took the model from 30 to 43 good out of 50 without touching a weight. The weight map in section 6 stays valid, but nothing in these results points to a specific layer to edit, so no surgery was done. This matches the research: prompt and harness optimisation beats weight edits for skill-level behaviour.
