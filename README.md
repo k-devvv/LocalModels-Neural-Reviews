@@ -6,7 +6,7 @@
 
 *No benchmarks, no vibes. Each review opens the model file and measures every layer.*
 
-![models](https://img.shields.io/badge/models_reviewed-12-2f6fde)
+![models](https://img.shields.io/badge/models_reviewed-13-2f6fde)
 ![layers](https://img.shields.io/badge/stacks-LLM%20·%20vision%20·%20audio-1a9e8f)
 ![gpu](https://img.shields.io/badge/GPU-RTX_4050_6GB-e8590c)
 ![method](https://img.shields.io/badge/method-weight_statistics-8250df)
@@ -17,11 +17,20 @@
 
 ## 📚 Contents
 
-1. [How each model was reviewed](#-how-each-model-was-reviewed)
-2. [Skeletons: what each model looks like inside](#-skeletons-what-each-model-looks-like-inside)
-3. [Measured layer profiles](#-measured-layer-profiles)
-4. [All reviews](#-all-reviews)
-5. [How to read a review](#-how-to-read-a-review)
+1. [All models at a glance](#-all-models-at-a-glance)
+2. [How each model was reviewed](#-how-each-model-was-reviewed)
+3. [Skeletons: what each model looks like inside](#-skeletons-what-each-model-looks-like-inside)
+4. [Measured layer profiles](#-measured-layer-profiles)
+5. [All reviews](#-all-reviews)
+6. [How to read a review](#-how-to-read-a-review)
+
+---
+
+## 🗺️ All models at a glance
+
+Every reviewed model on one page: one cell per layer, coloured by block type, with surgery targets and notable layers marked.
+
+![All models at a glance](assets/all-models-overview.svg)
 
 ---
 
