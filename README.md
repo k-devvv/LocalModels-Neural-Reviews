@@ -6,7 +6,7 @@
 
 *No benchmarks, no vibes. Each review opens the model file and measures every layer.*
 
-![models](https://img.shields.io/badge/models_reviewed-13-2f6fde)
+![models](https://img.shields.io/badge/models_reviewed-16-2f6fde)
 ![layers](https://img.shields.io/badge/stacks-LLM%20·%20vision%20·%20audio-1a9e8f)
 ![gpu](https://img.shields.io/badge/GPU-RTX_4050_6GB-e8590c)
 ![method](https://img.shields.io/badge/method-weight_statistics-8250df)
@@ -83,7 +83,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 ### Coding QLoRA adapter on Qwen3-1.7B
 ![LoRA skeleton](assets/skeleton-lora.svg)
 
-### Qwen3.5-4B: hybrid linear + full attention
+### Qwen3.5-4B / 9B / glb-coder: hybrid linear + full attention
 ![Qwen3.5 skeleton](assets/skeleton-qwen35.svg)
 
 ### Phi-4-mini: dense 32-layer
@@ -110,6 +110,9 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | **Qwen3.5-4B 3D-Coder** | Every MLP shares a sink channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
 | **Phi-4-mini** | Attention is nearly off at layer 0 (0.04) and layer 31 (0.09); a smooth climb in between. |
 | **Gemma 4 E4B** | Attention gain peaks at 47 (layer 7). Layer 23's post-MLP gain of 26 is scaled down to 0.065. Layers 24–41 reuse earlier K/V. |
+| **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
+| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0; gains more than double from layer 1 to 2, then rise gently with depth. |
+| **glb-coder** | Light fine-tune of Qwen3.5-4B: ~1.2–1.3% weight-RMS drift vs ~0.1% for 3D-Coder. |
 
 ---
 
@@ -130,6 +133,12 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | 🟥 | **Qwen3.5-4B 3D-Coder** | Qwen3.5-4B fine-tune for 3D / Three.js code | 4.33B + 334M | F16 | [read →](reviews/Qwen3.5-4B-3D-Coder.md) |
 | 🟫 | **Phi-4-mini-instruct** | Microsoft Phi-4, dense, 32 layers | 3.84B | Q4_K_M | [read →](reviews/Phi-4-mini.md) |
 | 🟨 | **Gemma 4 E4B-it** | Gemma 4, per-layer embeddings, sliding/global, KV sharing | 7.52B (≈4B core) | Q4_K_M | [read →](reviews/Gemma-4-E4B.md) |
+| 🟥 | **Qwen3.5-9B** | Qwen3.5 hybrid linear+full attention, untied head | 8.95B | Q4_K_M | [read →](reviews/Qwen3.5-9B.md) |
+| 🟥 | **glb-coder** | Qwen3.5-4B fine-tune for Three.js / GLB export | 4.2B | Q4_K_M | [read →](reviews/Qwen3.5-4B-GLB-3D-Coder.md) |
+| 🟦 | **Llama-3.2-3B Abliterated** | Meta Llama 3.2, dense, 28 layers, refusal removed | 3.21B | Q8_0 | [read →](reviews/Llama-3.2-3B-Abliterated.md) |
+
+> [!NOTE]
+> Phi-4-mini, Gemma 4 E4B and the Coding QLoRA adapter are no longer installed on the test machine. Their reviews are kept for reference.
 
 🔗 **Family overview:** [LFM3-family-comparison.md](reviews/LFM3-family-comparison.md) explains how the six LFM3 models share one LLM and which encoders are byte-identical.
 
