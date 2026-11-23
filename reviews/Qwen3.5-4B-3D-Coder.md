@@ -14,7 +14,7 @@ This is a 3D / Three.js coding fine-tune of [Qwen3.5-4B](Qwen3.5-4B.md). The ske
 
 Three findings stand out:
 
-1. **One shared direction dominates every MLP.** It sits 98.5% on hidden dim 0. It is the attention-sink / massive-activation channel, not a behaviour. Any "top singular vector" edit will hit it first. Remove it before looking for anything else.
+1. **One shared direction dominates every MLP.** It sits 98.5% on hidden dim 0. It is a weight outlier channel (the base Qwen3.5-4B shows the same dim-0 outlier in every `ffn_down`), not a behaviour. Any "top singular vector" edit will hit it first. Remove it before looking for anything else.
 2. **After removing it, the middle layers L13–L17 write the strongest layer-specific directions**, and they come in linked pairs (L13–14, L15–16, L16–17).
 3. **Two late layers can be read through the vocabulary.** L27 is a digit feature ("8"). L31 shapes code statement endings (`;`, `};`, `]`).
 
@@ -28,7 +28,7 @@ tokens ─► embed (tied) ─► L0-2 entry ─► L3-19 middle ─► L20-31 d
                          L13-17 strongest writers     L27 digit feature
                          L15↔L16↔L17 linked chain     L31 code-ending feature
                          L19 last full-attn before deep zone
-   every MLP also writes a shared sink channel on hidden dim 0 (do not touch)
+   every MLP also writes a shared outlier channel on hidden dim 0 (do not touch)
 ```
 
 | Item | Value |
@@ -57,11 +57,11 @@ tokens ─► embed (tied) ─► L0-2 entry ─► L3-19 middle ─► L20-31 d
 | Deep | 20–31 | `post_attention_layernorm` jumps 0.10 → 0.15 at L20 and climbs to 0.42 by L29; `A` drops to 0.2–0.47 (long memory) |
 | MTP | 32 | draft head, not on the main path |
 
-### The shared sink direction
+### The shared dim-0 direction
 
 - Eigen-decompose Σ W·Wᵀ over all 32 `down_proj` weights. The top direction holds 0.29% of the total MLP write energy, but layers line up on it with \|cos\| up to 0.92.
 - It is 98.5% one coordinate: **hidden dim 0**.
-- Its vocabulary readout is junk (`il`, `ing`, `usr` …). It has no meaning as a token; it is a scale channel that attention uses as a sink.
+- Its vocabulary readout is junk (`il`, `ing`, `usr` …). It has no meaning as a token; it looks like a scale channel. Whether attention uses it as a sink at run time was not measured.
 
 ### Layer-specific write strength (shared direction removed)
 
@@ -115,7 +115,7 @@ L15 → L16 → L17 act as a chain. An edit should cover the pair, not one layer
 
 ## 5. Weak spots
 
-- The sink channel on dim 0 is shared by every layer. Careless edits or aggressive quantisation of dim 0 can break the whole model.
+- The outlier channel on dim 0 is shared by every layer. Careless edits or aggressive quantisation of dim 0 can break the whole model.
 - The middle layers can't be read through the vocabulary, so behaviour directions there must come from activations.
 - If generations fail to close code blocks, L31 is the first place to *measure* (not edit).
 
@@ -137,7 +137,7 @@ Recommended edit size: top 64 neurons per target layer, `W[:,j] -= α·d(dᵀW[:
 
 ## 7. Verdict
 
-Same skeleton as Qwen3.5-4B, with a sharper picture of the MLPs. The weights point to **L15+16 and L19** as the surgery targets, and say clearly what not to touch: the dim-0 sink, L27 and L31. The final layer choice still needs an activation probe on real good vs bad outputs.
+Same skeleton as Qwen3.5-4B, with a sharper picture of the MLPs. The weights point to **L15+16 and L19** as the surgery targets, and say clearly what not to touch: the dim-0 outlier channel, L27 and L31. The final layer choice still needs an activation probe on real good vs bad outputs.
 
 **Update:** a behaviour test (section 8) found the failures come from verbosity, not looping, and a prompt change fixes most of them. Surgery is on hold.
 

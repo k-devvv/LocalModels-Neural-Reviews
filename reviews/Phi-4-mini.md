@@ -10,7 +10,7 @@
 
 ## 1. Summary
 
-Phi-4-mini is a plain **dense transformer**: 32 identical layers, 3.84B parameters, MIT license. Three quarters of every layer is MLP. Its weights show something unusual: the **first and last layers almost switch attention off**, and gains climb slowly and steadily through the rest.
+Phi-4-mini is a plain **dense transformer**: 32 identical layers, 3.84B parameters, MIT license. Three quarters of every layer is MLP. Its weights show something unusual: the **first and last layers have very low attention gain** (likely near-silent attention), and gains climb slowly and steadily through the rest.
 
 ---
 
@@ -45,10 +45,10 @@ Phi-4-mini is a plain **dense transformer**: 32 identical layers, 3.84B paramete
 | Width / MLP | 3,072 / 8,192 |
 | Attention | 24 query / 8 KV heads, head dim 128 |
 | Positional | partial RoPE (96 dims), LongRoPE short/long factors |
-| Context | 131,072 (trained at 4,096, stretched) |
+| Context | 131,072 (base RoPE window 4,096, extended with LongRoPE) |
 | Quant | Q4_K_M |
 
-**Simple analogy:** a long hallway of 32 identical rooms. The doors of the first and the last room are almost shut to the rest of the text (attention off); those rooms just work on the word in hand. In the middle, each room opens its door a little wider than the one before.
+**Simple analogy:** a long hallway of 32 identical rooms. The doors of the first and the last room are almost shut to the rest of the text (very low attention gain); those rooms likely work mostly on the word in hand. In the middle, each room opens its door a little wider than the one before.
 
 ---
 
@@ -58,18 +58,18 @@ Phi-4-mini is a plain **dense transformer**: 32 identical layers, 3.84B paramete
 
 | Zone | Layers | Attention gain | MLP gain | What it means |
 |---|---|---|---|---|
-| **Entry** | 0 | **0.042** | 0.14 | Attention nearly off. The layer mostly re-shapes the raw token embedding. |
-| **Reading** | 1–12 | 0.17 → 0.40 | 0.17 → 0.33 | Attention wakes up; layers gather nearby context. |
-| **Reasoning core** | 13–29 | 0.44 → 0.60 | 0.33 → 0.46 | Slow, steady climb. Peak attention at layer 28. |
-| **Exit** | 30–31 | 0.45, **0.088** | 0.44, 0.235 | Attention fades out again. Layer 31 is MLP-only output shaping. |
+| **Entry** | 0 | **0.042** | 0.14 | Attention very quiet. Likely mostly re-shapes the raw token embedding. |
+| **Reading** | 1–12 | 0.17 → 0.40 | 0.16 → 0.26 | Attention gain rises; likely gathering nearby context. |
+| **Middle core** | 13–29 | 0.44 → 0.60 | 0.27 → 0.46 | Slow, steady climb. Peak attention at layer 28. |
+| **Exit** | 30–31 | 0.45, **0.088** | 0.44, 0.235 | Attention gain falls again. Layer 31 is likely mostly MLP output shaping. |
 
 Observations:
 
-- **Bookend layers.** Layers 0 and 31 both mute attention (gain 0.04 and 0.09, vs 0.4–0.6 in the middle). They act like per-token adapters between the embedding and the stack.
-- **Layer 31 is special in its matrices too:** highest `ffn_up` RMS (0.0435), lowest `ffn_down` (0.0238), lowest `attn_output` (0.0196). It reads widely from the residual and writes back gently.
-- **No sudden jumps.** Unlike TwIL or Gemma, gains rise smoothly; there is no single "loud" layer. That makes the model predictable to edit.
-- **Early qkv alternates** between about 0.024 and 0.04 RMS layer by layer, a hint that early layers pair up into wide and narrow lookups.
-- `ffn_down` is flat at about 0.033 across all layers.
+- **Bookend layers.** Layers 0 and 31 both mute attention (gain 0.04 and 0.09, vs 0.4–0.6 in the middle). They likely act like per-token adapters between the embedding/head and the stack.
+- **Layer 31 is special in its matrices too:** highest `ffn_up` RMS (0.0435), lowest `ffn_down` (0.0238), lowest `attn_output` (0.0196). This suggests it reads widely from the residual and writes back gently.
+- **No sudden jumps.** Unlike TwIL or Gemma, gains rise smoothly; there is no single "loud" layer. That likely makes the model more predictable to edit.
+- **Early qkv jumps** between about 0.024 (layers 0, 2, 5) and 0.04 RMS; the reason is unclear from weights alone.
+- `ffn_down` is flat at about 0.032–0.034 in layers 0–29, then drops (0.029, 0.024) in layers 30–31.
 
 ### Every layer (all 32)
 
@@ -123,15 +123,15 @@ Observations:
 
 1. **Simple and predictable.** Plain dense layers, smooth gain curve, no oddities to work around.
 2. **Big vocabulary** (200K) for its size, good for code and many languages.
-3. **MLP-heavy** (75% of each layer), which suits stored knowledge and reasoning patterns.
+3. **MLP-heavy** (75% of each layer), which may suit stored knowledge.
 4. **Grouped-query attention** (8 KV heads) keeps the KV cache small.
 5. **MIT license.**
 
 ## 5. Weak spots
 
-1. **Stretched context.** Trained at 4K and extended to 128K with LongRoPE; quality far out is likely lower than the headline number.
+1. **Stretched context.** Base RoPE window 4K, extended to 128K with LongRoPE; quality far out is likely lower than the headline number.
 2. **Embedding is 16% of all params.** The large vocab costs space that a 3.8B model could use for layers.
-3. **Two near-idle attention blocks** (layers 0 and 31) spend about 50M params on attention that barely runs.
+3. **Two near-idle attention blocks** (layers 0 and 31) spend about 50M params on attention with very low gain.
 4. Plain full attention everywhere: long context costs more memory than Qwen3.5 or Gemma 4.
 
 ---
@@ -141,7 +141,7 @@ Observations:
 | Goal | Best place | Why |
 |---|---|---|
 | Fact edit (ROME-style) | MLP of layers 8–18 | Middle of the stack, moderate gain, smooth neighbours. |
-| Steering vector | Residual after layers 16–22 | Core of the reasoning zone; gains steady so effects spread evenly. |
+| Steering vector | Residual after layers 16–22 | Middle of the core zone; gains steady so effects spread evenly. |
 | LoRA for style / format | `attn_qkv` + `ffn_up` in 20–29 | Loudest layers before the exit. |
 | Pruning candidate | Attention of layers 0 and 31 | Gain under 0.09; test removing them first. |
 | **Leave alone** | Layers 0, 30, 31 MLPs; LongRoPE factors | They bridge the embedding / head; changing RoPE factors breaks long context. |
@@ -152,4 +152,4 @@ Observations:
 
 ## 7. Verdict
 
-A clean, textbook dense model. Phi-4-mini has no tricks inside: 32 even layers whose gains rise smoothly, with attention almost off at both ends. That makes it the easiest model here to understand and to edit. It trades efficiency features (hybrid attention, KV sharing) for simplicity, so it's the best base in this collection for fine-tuning experiments.
+A clean, textbook dense model. Phi-4-mini has no tricks inside: 32 even layers whose gains rise smoothly, with attention almost off at both ends. That likely makes it one of the easiest models here to understand and to edit. It trades efficiency features (hybrid attention, KV sharing) for simplicity, so it is a good base for fine-tuning experiments.

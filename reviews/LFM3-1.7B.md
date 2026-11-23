@@ -55,8 +55,8 @@ The **base text model** of the family. Every other LFM3 model in this lab reuses
 | **Entry** | 0–1 | conv mixer is strongest here (conv RMS highest at L0); MLP gain high at L1 | turn raw tokens into local word/phrase features |
 | **Early mix** | 2–7 | first global attention at L2; post-norms still small | first look across the whole context |
 | **Core** | 8–17 | flattest stretch; MLP gain lowest at L9 (0.137) | steady meaning-building; best place for edits |
-| **Dead-ish attention** | 18 | q/k norm only 0.087/0.091 vs ~1.0+ elsewhere | attention scores here are nearly flat, so L18 attends almost uniformly; its MLP still works |
-| **Exit** | 19–23 | post-norms climb to their max; MLP gain peaks (whole model) at L22, L2, L23, L1 | commit to the answer and shape the next token |
+| **Dead-ish attention** | 18 | q/k norm only 0.087/0.091 vs ~1.0+ elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
+| **Exit** | 19–23 | post-norms climb to their max; top-4 MLP pre-norm gains of the whole model (not only this zone) are L22, L2, L23, L1 | likely: commit to the answer and shape the next token |
 
 Other measured patterns:
 - **Conv blocks** pre-norm gain 0.142–0.200; **attention blocks** pre-norm only 0.041–0.083. Attention gets a quieter input than conv.
@@ -99,16 +99,20 @@ Other measured patterns:
 
 ---
 
+### Weight outlier channel 397 (new)
+
+Channel 397 has the largest `post_attention_norm` gain in 15 of 24 layers (about 5.6× the per-layer median, up to 8.9×), mostly in layers 0–13, always positive. The largest value is 0.48 at layer 23. This is a weight finding only; activations were not measured. Leave channel 397 alone when editing or pruning.
+
 ## 4. What's strong
 
-1. **Hybrid design is cheap.** 13 of 24 blocks use a short convolution instead of attention, so the KV cache only grows for 11 blocks. Long context is affordable on 6 GB.
+1. **Hybrid design is cheap.** 13 of 24 blocks use a short convolution instead of attention, so the KV cache only grows for 11 blocks. That should make long context cheaper on 6 GB (memory use not measured).
 2. **Long context:** 262k tokens, with global attention every other attention block.
 3. **Sandwich norms + q/k norms + attention gate:** a very stable design to fine-tune.
 4. **Small and fast:** 1.73B params at Q4_K_M runs fully on the GPU.
 
 ## 5. Weak spots
 
-1. **L18 attention is nearly switched off** (q/k gain ≈0.09). That is ~5% of the attention budget doing almost nothing.
+1. **L18 attention is nearly switched off** (q/k gain ≈0.09). By weights it likely contributes little (not verified on activations).
 2. **Small width (2,048)** limits how much knowledge fits; expect weaker facts than 7–8B models.
 3. **Tied embedding:** input and output share one matrix, so vocabulary edits hit both ends.
 

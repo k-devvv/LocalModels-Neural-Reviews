@@ -10,7 +10,7 @@
 
 ## 1. Summary
 
-Dory is a **looped (recurrent-depth) transformer**: some of its layers are run **several times in a row** on the same token. The file holds 36 logical layers, but the model thinks through **192 blocks of compute**. It is an RL-tuned checkpoint with a **262k context**.
+Dory is a **looped (recurrent-depth) transformer**: some of its layers are run **several times in a row** on the same token. The file holds 36 logical layers, but the model runs **192 blocks of compute** per token. The file name suggests an RL-tuned checkpoint with a **262k context**.
 
 It also has **no normalisation layers at all**. Instead every block has learned scalars (`residual_alpha`, gate/qk/up scales) that set how loud it is.
 
@@ -53,14 +53,16 @@ It also has **no normalisation layers at all**. Instead every block has learned 
 |---|---|---|---|
 | **Input** | 0–7 (0–15) | residual α falls 0.180 → 0.148 → 0.123; MLP gate scale highest (1.99 → 1.1) | encode the prompt once, loudly |
 | **Loop, early** | 8–11 (16–23) | gate scale drops 1.44 → 0.84 | the loop body starts quieter so 4 passes don't blow up |
-| **Loop, middle** | 12–22 (24–45) | residual α lowest band (~0.07–0.09); gate scale ~0.6–0.8 | small careful updates per pass: the "thinking" iterations |
-| **Loop, late** | 22–27 (45–55) | gate scale back up to ~1.0 | each pass ends with a stronger write |
-| **Output** | 28–35 (56–71) | **block 56: lowest residual (0.030) but highest gate & qk scales**; block 70 qk 0.058; block 71 up 0.966; gate scale ends 0.62 | turn the looped state into a token |
+| **Loop, middle** | 12–21 (24–43) | attention residual α often low (0.066–0.113); gate scale ~0.6–0.8 | likely small updates per pass |
+| **Loop, late** | 22–27 (44–55) | gate scale back up to ~0.86–1.03 | each pass ends with a stronger write |
+| **Output** | 28–35 (56–71) | **block 56: lowest residual (0.030) but highest attention gate scale (0.049) and second-highest qk scale (0.044)**; block 70 qk 0.058 (highest); block 71 up 0.966; gate scale ends 0.62 | likely turns the looped state into a token |
 
-- Matrix RMS is **~0.0198 in every block**: all the per-layer differences live in the scalars, not in the weights.
-- **Block 56** is the hand-off from the loop: it barely adds to the stream but attends very sharply.
+- Matrix RMS is **~0.0198 in every block sampled**: the per-layer differences in loudness show up in the scalars, not in the matrix scale.
+- **Block 56** is the hand-off from the loop: it barely adds to the stream, and its high gate/qk scales suggest sharper attention (not tested on prompts).
 
 ### Every layer
+
+Values are the mean of |x| over each scale vector.
 
 | Layer | blocks | zone | window | res_α attn | res_α ffn | attn gate_s | qk_s | ffn gate_s | ffn up_s |
 |---|---|---|---|---|---|---|---|---|---|
@@ -103,18 +105,30 @@ It also has **no normalisation layers at all**. Instead every block has learned 
 
 ---
 
+### Weight outlier channels in `residual_alpha` (new)
+
+`residual_alpha` has 72 vectors (attention and FFN for each of 36 layers). Three channels stand far above the per-vector median (z > 8):
+
+| Channel | Vectors flagged | Max vs per-vector median | Where |
+|---|---|---|---|
+| 1804 | 19 | 15.1× | 11 attention / 8 FFN; 13 inside the loop (8–27), 6 in output layers |
+| 1239 | 12 | 18.4× | 10 in output layers 28–35 |
+| 557 | 9 | 18.8× | all inside the loop |
+
+The other scale vectors and the `ffn_down` rows show no such outliers. These are weight findings; activations were not measured. Because loop layers run 4 times, avoid editing channels 557 and 1804 there.
+
 ## 4. What's strong
 
-1. **Deep thinking for its size:** 192 blocks of compute from 4B params. Reasoning per byte is very high.
+1. **Deep compute for its size:** 192 blocks of compute from 4B params. Whether this buys better reasoning was not tested here.
 2. **Long context:** 262k, with mostly sliding-window attention (cheap KV cache).
 3. **Clean scale design:** with no norms, every layer's volume is one readable number. That makes it easy to inspect and steer.
 4. **Precise ends:** embedding and output head kept in BF16.
 
 ## 5. Weak spots
 
-1. **4× loop = ~4× slower** per token than a plain 4B model; on 6 GB, expect slow generation.
+1. **4× loop = ~2.7× more block compute** per token than a plain 36-layer model (192 vs 72 blocks); on 6 GB, expect slow generation.
 2. **Edits in the loop are applied 4 times.** A small change in layers 8–27 is multiplied.
-3. **No norms** means it is sensitive to quantization and to fine-tuning learning rates.
+3. **No norms** likely makes it more sensitive to quantization and to fine-tuning learning rates.
 4. **Large BF16 embedding/head** eat VRAM.
 
 ---
@@ -132,4 +146,4 @@ It also has **no normalisation layers at all**. Instead every block has learned 
 
 ## 7. Verdict
 
-Dory is the **most unusual model in the lab**: a 4B looped, norm-free transformer that thinks like a much deeper model. Strong for reasoning, slow per token. Edit outside the loop.
+Dory is the **most unusual model in the lab**: a 4B looped, norm-free transformer with the compute depth of a much deeper model. Reasoning quality was not tested; expect slower tokens. Edit outside the loop.

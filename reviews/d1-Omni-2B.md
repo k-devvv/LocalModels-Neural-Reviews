@@ -10,7 +10,7 @@
 
 ## 1. Summary
 
-The **all-senses decision model**: d1-style non-causal judging with the vision encoder of LFM3-Omni and the shared audio encoder. Decision temperature **3.383** (softer than d1's 1.337). Context 128k. Stored at **Q8_0** (8-bit, near lossless).
+The **all-senses decision model**: d1-style non-causal judging with a vision encoder close to LFM3-Omni's (~6% relative difference, within Q4/Q8 quantization noise) and an audio encoder of the same design as LFM3-Audio/Omni. Decision temperature **3.383** (softer than d1's 1.337). Context 128k. Stored at **Q8_0** (8-bit, near lossless).
 
 ---
 
@@ -55,8 +55,8 @@ The **all-senses decision model**: d1-style non-causal judging with the vision e
 | **Entry** | 0–1 | conv mixer is strongest here (conv RMS highest at L0); MLP gain high at L1 | turn raw tokens into local word/phrase features |
 | **Early mix** | 2–7 | first global attention at L2; post-norms still small | first look across the whole context |
 | **Core** | 8–17 | flattest stretch; MLP gain lowest at L9 (0.129) | steady meaning-building; best place for edits |
-| **Dead-ish attention** | 18 | q/k norm only 0.101/0.107 vs ~1.0+ elsewhere | attention scores here are nearly flat, so L18 attends almost uniformly; its MLP still works |
-| **Exit** | 19–23 | post-norms climb to their max; MLP gain peaks (whole model) at L2, L1, L4, L22 | commit to the answer and shape the next token |
+| **Dead-ish attention** | 18 | q/k norm only 0.101/0.107 vs ~1.0+ elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
+| **Exit** | 19–23 | post-norms climb to their max; top-4 MLP pre-norm gains of the whole model (not only this zone) are L2, L1, L4, L22 | likely: commit to the answer and shape the next token |
 
 Other measured patterns:
 - **Conv blocks** pre-norm gain 0.139–0.199; **attention blocks** pre-norm only 0.042–0.073. Attention gets a quieter input than conv.
@@ -111,11 +111,11 @@ Average **0.083**. Most changed: L23, L3, L1. Least changed: L16, L20, L22.
 
 ## 4. The extra senses (projector file `mmproj`, 304.7M params)
 
-### Audio encoder (`a.blk`, 17 blocks) — identical in Audio, Omni and d1-Omni
+### Audio encoder (`a.blk`, 17 blocks) — same design in Audio, Omni and d1-Omni; weights differ (~9–12% relative, 0 of 170 tensors byte-identical Audio vs Omni)
 
 Sound → `a.conv1d` subsampling (256 channels) → `a.pre_encode.out` [4096→768] → 17 blocks of width 768:
 - **10 conv blocks** (6.5M each): depthwise conv `c_dw` + two pointwise convs `c_pw1`/`c_pw2` (Conformer style);
-- **7 attention blocks** (5.9M each) at L2, 5, 8, 11, 14, 15, 16. The last three are back-to-back: the top of the encoder is attention-heavy, to tie sounds into words.
+- **7 attention blocks** (5.9M each) at L2, 5, 8, 11, 14, 15, 16. The last three are back-to-back: the top of the encoder is attention-heavy (perhaps to tie sounds into words; interpretation).
 
 Norms climb with depth: conv `ln1` 0.34→0.74, attention `ln1` 0.03→0.41, `ln2` 0.23→0.71. Then `a.post_ln` (0.108) → `mm.a.mlp` (768→2048→2048) into the LLM.
 
@@ -126,8 +126,8 @@ Images are cut into 16×16 patches (two F16 patch-embedding tensors, 3→1024), 
 - **6 attention blocks** at L2, 4, 6, 8, 10, 12.
 
 Measured highlights:
-- **L12 attention** has the largest value/output weights of the encoder: it gathers the final image summary.
-- **L13 MLP down-projection collapses** (much smaller than every other block): an output bottleneck before the adapter.
+- **L12 attention** has the largest value/output weights of the encoder: possibly where the final image summary is gathered (interpretation).
+- **L13 MLP down-projection collapses** (much smaller than every other block): likely an output bottleneck before the adapter.
 - **Adapter:** `mm.input_norm` → `mm.0` [4096×4096] → `mm.2` [4096→2048]. It folds patches into the LLM's 2,048-wide stream.
 
 ### Every projector layer
@@ -178,13 +178,13 @@ Measured highlights:
 ## 5. What's strong
 
 1. **Highest precision file in the family** (Q8_0): weights are near the original.
-2. **Closest LLM to LFM3-Audio/Omni** (drift 0.056) and still close to the base (0.076): it was built from the Omni line, not from d1.
+2. **Closest LLM to LFM3-Audio/Omni** (drift ~0.06) and still close to the base (0.087): it likely shares the Omni line's starting point rather than d1's.
 3. **Sees and hears:** vision + audio encoders, judging output.
 
 ## 6. Weak spots
 
 1. **Biggest LFM3 file** for its size because of Q8_0 (VRAM cost ~2×).
-2. **L23 moved most** (drift ≈0.17): the final block was re-tuned for the decision head; don't edit it.
+2. **L23 moved most** (drift ≈0.17): the final block was probably re-tuned for the decision head; don't edit it.
 3. Like d1, **not for free-text chat**.
 
 ---
@@ -198,7 +198,7 @@ Measured highlights:
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
 | Revive / prune | **L18 attention** | near-flat attention; candidate to prune or to re-train with a small LoRA |
 | Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
-| Projector | **adapter (`mm.*`) only** | the encoders are shared with sibling models; tune the adapter, not the tower |
+| Projector | **adapter (`mm.*`) only** | the encoders closely match sibling models; tune the adapter, not the tower |
 
 ---
 

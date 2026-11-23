@@ -10,9 +10,9 @@
 
 ## 1. Summary
 
-Qwen3.5-4B is a **hybrid** model. Out of 32 layers, 24 use **linear attention** (a Gated DeltaNet-style recurrent memory) and only 8 use full attention, one in every four. A 33rd block is a **multi-token-prediction (MTP)** head for speculative decoding. A 24-layer vision encoder (334M) lets it read images.
+Qwen3.5-4B is a **hybrid** model. Out of 32 layers, 24 use **linear attention** (a Gated DeltaNet-style recurrent memory) and only 8 use full attention, one in every four. A 33rd block is a **multi-token-prediction (MTP)** head for speculative decoding (present in the bartowski GGUF reviewed here; the Ollama-installed copy has only the 32 main blocks and no MTP tensors). A 24-layer vision encoder (334M) lets it read images.
 
-The weights show a clear plan: early linear layers forget fast, deep linear layers keep long memory, and the last third of the network is where gains get loud.
+The weights show a clear plan: early linear layers have a fast-decay setting, deep linear layers a slow-decay one, and the last third of the network is where gains get loud.
 
 ---
 
@@ -58,7 +58,7 @@ The weights show a clear plan: early linear layers forget fast, deep linear laye
 | Context | 262,144 (RoPE base 10M, multimodal RoPE) |
 | Quant | Q4_K_M, imatrix |
 
-**Simple analogy:** most of the layers are a fast note-taker that keeps a running summary instead of re-reading everything. Every fourth layer is a careful reader that looks back at the full text. Because notes are cheap, the long context costs much less memory than a normal transformer.
+**Simple analogy:** most of the layers are a fast note-taker that keeps a running summary instead of re-reading everything. Every fourth layer uses full attention and can look back at the full text. Because notes are cheap, the long context costs much less memory than a normal transformer.
 
 ---
 
@@ -70,15 +70,16 @@ The weights show a clear plan: early linear layers forget fast, deep linear laye
 |---|---|---|---|---|
 | **Entry** | 0–2 | 1.04–1.10 | 0.95–1.0 | Linear layers with very fast decay (`ssm_a` 7–13 at layers 1–2): short, local memory. Layer 0's decay is tiny (0.09). |
 | **Middle** | 3–19 | 1.04–1.16 | ≈1.0 | Steady and calm. Decay 1.6–3.5, then drops below 1 around 16–18. |
-| **Deep** | 20–31 | 1.28–1.40 | 1.15–1.42 | Gains jump. Linear decay falls to 0.20–0.47: these layers hold memory across long spans. |
+| **Deep** | 20–31 | 1.28–1.40 | 1.15–1.42 | Gains jump. Linear decay falls to 0.20–0.47, which suggests (not tested) slower forgetting. |
 | **MTP** | 32 | 1.30 | n/a | Separate head that guesses the token after next. |
 
 Observations:
 
-- **Memory gets longer with depth.** `ssm_a` (how fast the linear state forgets) goes from 7–13 in layers 1–2 to 0.2–0.5 in layers 20–30. The `ssm_dt` bias falls with it (3–4 → 1.7–2.9). Early layers track nearby words; deep layers carry the thread.
+- **Decay settings fall with depth.** `ssm_a` (how fast the linear state forgets) goes from 7–13 in layers 1–2 to 0.2–0.5 in layers 20–30. The `ssm_dt` bias falls with it (3–4 → 1.7–2.9). A plausible reading is shorter memory early and longer memory deep; this was not tested with prompts.
 - **Full-attention layers stay quieter** than their linear neighbours in the deep zone (attention gain 1.13–1.22 vs 1.28–1.40). They do precise lookups; the linear layers do the bulk mixing.
 - **q/k norms peak at layer 19** (1.64), right before the deep zone starts. That is the sharpest full-attention lookup in the stack.
 - **MLP writes are loudest at the ends:** `ffn_down` RMS is 0.0089 at layer 0, about 0.0066 in the middle and 0.0087 at layer 31.
+- **One output channel stands out in every MLP (new, re-measured).** In all 32 layers, the `ffn_down` row for hidden dimension 0 has the largest RMS, 1.7–4.3× the per-layer median row. It is strongest in layers 0–2 and weakens toward layer 30. This is a weight outlier channel; whether it carries a large activation at run time was not measured. Avoid editing dimension 0.
 
 ### Every layer (all 33)
 
@@ -170,7 +171,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 ## 4. What's strong
 
 1. **Cheap long context.** Only 8 of 32 layers keep a KV cache, so 262K context fits in far less memory than a dense 4B model.
-2. **Clear memory plan.** Decay values show an orderly short-to-long memory ladder.
+2. **Orderly decay plan.** Decay values fall steadily from early to deep layers.
 3. **Built-in speed-up.** The MTP block allows speculative decoding without a separate draft model.
 4. **Vision included** with a full-precision encoder.
 5. **Careful quant.** The sensitive parts (linear qkv, MTP, embedding) got 6–8 bits.
@@ -193,7 +194,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 | Long-context behaviour | Full-attention layers 23, 27, 31 | They do the exact lookups the linear layers can't. |
 | LoRA for style / format | Linear `attn_qkv` + `ssm_out` in 20–31 | Deep zone shapes the output; memory is long there. |
 | Vision tweaks | Projector `mm.0` / `mm.2` | Small, sits between two frozen stacks. |
-| **Leave alone** | Layers 0–2, block 32 (MTP), `ssm_a` / `ssm_dt` everywhere | Changing decay breaks memory; MTP must match the main head. |
+| **Leave alone** | Layers 0–2, block 32 (MTP), `ssm_a` / `ssm_dt` everywhere, hidden dim 0 | Changing decay breaks memory; MTP must match the main head. |
 
 > To confirm a zone before editing, run a probe: log the residual norm per layer on a few prompts and check that the jump really happens near layer 20.
 
@@ -201,4 +202,4 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 
 ## 7. Verdict
 
-The most advanced design in this collection. Qwen3.5-4B swaps three out of four attention layers for a recurrent memory, adds a speculative-decoding head and a full-precision vision encoder, and still fits a 6 GB GPU. The weights show an orderly design: fast memory early, long memory deep, loud decision layers at the end. Best pick here for long documents and images.
+The most advanced design in this collection. Qwen3.5-4B swaps three out of four attention layers for a recurrent memory, adds a speculative-decoding head and a full-precision vision encoder, and still fits a 6 GB GPU. The weights show an orderly design: fast decay early, slow decay deep, loud layers at the end. Best pick here for long documents and images.

@@ -55,8 +55,8 @@
 | **Entry** | 0–1 | conv mixer is strongest here (conv RMS highest at L0); MLP gain high at L1 | turn raw tokens into local word/phrase features |
 | **Early mix** | 2–7 | first global attention at L2; post-norms still small | first look across the whole context |
 | **Core** | 8–17 | flattest stretch; MLP gain lowest at L9 (0.079) | steady meaning-building; best place for edits |
-| **Dead-ish attention** | 18 | q/k norm only 0.061/0.065 vs ~1.0+ elsewhere | attention scores here are nearly flat, so L18 attends almost uniformly; its MLP still works |
-| **Exit** | 19–23 | post-norms climb to their max; MLP gain peaks (whole model) at L2, L1, L22, L4 | commit to the answer and shape the next token |
+| **Dead-ish attention** | 18 | q/k norm only 0.061/0.065 vs ~1.0+ elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
+| **Exit** | 19–23 | post-norms climb to their max; top-4 MLP pre-norm gains of the whole model (not only this zone) are L2, L1, L22, L4 | likely: commit to the answer and shape the next token |
 
 Other measured patterns:
 - **Conv blocks** pre-norm gain 0.135–0.188; **attention blocks** pre-norm only 0.032–0.054. Attention gets a quieter input than conv.
@@ -118,8 +118,8 @@ Images are cut into 16×16 patches (two F16 patch-embedding tensors, 3→1024), 
 - **6 attention blocks** at L2, 4, 6, 8, 10, 12.
 
 Measured highlights:
-- **L12 attention** has the largest value/output weights of the encoder: it gathers the final image summary.
-- **L13 MLP down-projection collapses** (much smaller than every other block): an output bottleneck before the adapter.
+- **L12 attention** has the largest value/output weights of the encoder: possibly where the final image summary is gathered (interpretation).
+- **L13 MLP down-projection collapses** (much smaller than every other block): likely an output bottleneck before the adapter.
 - **Adapter:** `mm.input_norm` → `mm.0` [4096×4096] → `mm.2` [4096→2048]. It folds patches into the LLM's 2,048-wide stream.
 
 ### Every projector layer
@@ -153,7 +153,7 @@ Measured highlights:
 
 ## 6. Weak spots
 
-1. **Furthest LLM from the base** (drift 0.382) and from Audio (0.487): text-only behaviour differs most.
+1. **Furthest LLM from the base** (drift 0.265) and from Audio (0.300): text-only behaviour differs most.
 2. **Smaller vision weights** than Omni's encoder; adapter input norm 0.45 means it damps image features more.
 3. **L18 attention weakest of all** (q/k ≈0.06).
 
@@ -168,7 +168,7 @@ Measured highlights:
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
 | Revive / prune | **L18 attention** | near-flat attention; candidate to prune or to re-train with a small LoRA |
 | Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
-| Projector | **adapter (`mm.*`) only** | the encoders are shared with sibling models; tune the adapter, not the tower |
+| Projector | **adapter (`mm.*`) only** | the encoders closely match sibling models; tune the adapter, not the tower |
 
 ---
 

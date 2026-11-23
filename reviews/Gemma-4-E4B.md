@@ -42,7 +42,7 @@ Its gains are the most extreme in this collection: attention gain hits **47** at
 | Item | Value |
 |---|---|
 | Architecture | `gemma4`, Gemma license |
-| Parameters | 7.52B total; ≈4.0B compute core + 2.82B per-layer embeddings |
+| Parameters | 7.52B total; ≈4.0B in the 42 layers + 0.67B embedding + 2.82B per-layer embeddings |
 | Layers | 42 |
 | Width / MLP | 2,560 / 10,240 |
 | Attention | 8 query / 2 KV heads; head 256 (sliding) / 512 (global) |
@@ -63,18 +63,18 @@ Its gains are the most extreme in this collection: attention gain hits **47** at
 | Zone | Layers | Attention gain | MLP gain | What it means |
 |---|---|---|---|---|
 | **Entry** | 0–1 | 10–12 | 6.3, 35 | Low output scale (0.06, 0.16) and little PLE use: gentle start. |
-| **Loud lexical** | 2–8 | **18–47** | **20–65** | Extremely loud. Peak attention at 7, peak MLP at 5. Likely word-level features. |
-| **Transition** | 9–14 | 13–19 | 6.6–13.9 | Gains fall back. |
+| **Loud lexical** | 2–8 | **18–47** | **9–65** | Extremely loud. Peak attention at 7, peak MLP at 5. Likely word-level features. |
+| **Transition** | 9–14 | 13–19 | 1.9–13.9 | Gains fall back. |
 | **Quiet middle** | 15–23 | 3.1–7.0 | 0.5–2.9 | Calm work zone, ending in the **layer-23 spike**. |
-| **KV-shared decision** | 24–41 | 3.8–12.4 | 0.5–2.9 | No own K/V; reads earlier memory. Output scales 0.8–0.9 (strong writes). |
+| **KV-shared decision** | 24–41 | 3.8–12.4 | 0.5–1.1 | No own K/V; reads earlier memory. Output scales 0.42–0.89 (0.81–0.89 in 31–40). |
 
 Observations:
 
-- **Layer 23 is the hinge.** It is the last global layer that still computes its own K/V. Its post-MLP gain is **26.2** and post-norm 8.2, yet `layer_output_scale` is **0.065**. It produces a very loud signal and then writes only a whisper of it. Layer 22 shows the same pattern, weaker (7.4 / 0.157).
-- **KV sharing is visible in the weights.** In layers 24–41 the `k_norm` is a constant 0.126 (0.061 on global layers): untrained leftovers, because those layers never compute their own keys.
+- **Layer 23 is the hinge.** It is the last global layer that still computes its own K/V. Its post-MLP gain is **26.2** and post-norm 8.2, yet `layer_output_scale` is **0.065**. This suggests a very loud signal of which only a small part is written back (not checked on prompts). Layer 22 shows the same pattern, weaker (7.4 / 0.157).
+- **KV sharing is visible in the weights.** In layers 24–41 the `k_norm` is a constant 0.126 (0.061 on global layers): likely unused leftovers, because those layers do not compute their own keys.
 - **PLE use varies.** The PLE input gate is nearly closed at layers 0, 1, 8, 22, 23 (RMS 0.0014–0.0058) and open elsewhere (0.01–0.022).
-- **Late layers write hardest.** `layer_output_scale` is 0.80–0.89 in layers 31–40, the highest in the stack; layer 41 drops to 0.445.
-- `ffn_down` RMS dips to 0.013–0.015 at layers 19–23, then recovers to about 0.018.
+- **Late layers write hardest.** `layer_output_scale` is 0.81–0.89 in layers 31–40, among the highest in the stack (layer 2 is also 0.84); layer 41 drops to 0.445.
+- `ffn_down` RMS dips to 0.013–0.015 at layers 18–23, then recovers to 0.015–0.019.
 
 ### Every layer (all 42)
 
@@ -140,14 +140,14 @@ Observations:
 1. **4B compute, 7.5B knowledge.** PLE adds lookup capacity without adding work per token.
 2. **Very small KV cache.** Sliding window on 5/6 of layers plus 18 layers of KV sharing.
 3. **Big vocabulary** (262K) for many languages.
-4. **Logit softcap** keeps the final scores stable.
+4. **Logit softcap** bounds the final scores (±30).
 5. Built as an any-to-any model (audio + vision encoders exist, not reviewed here).
 
 ## 5. Weak spots
 
 1. **Large on disk.** 7.5B params means a bigger file than a true 4B model; PLE must still sit in RAM or VRAM.
-2. **Extreme gains in layers 2–8** (up to 65) make the early stack fragile under heavy quantization or edits.
-3. **Only 7 global layers**; long-range recall rests on them.
+2. **Extreme gains in layers 2–8** (up to 65) likely make the early stack fragile under heavy quantization or edits.
+3. **Only 7 global layers**; long-range recall likely rests on them.
 4. **Needs a recent runtime** that supports `gemma4`, PLE and KV sharing.
 
 ---
@@ -157,11 +157,11 @@ Observations:
 | Goal | Best place | Why |
 |---|---|---|
 | Fact edit (ROME-style) | MLP of layers 15–21 | Quiet middle, low gain, own K/V still computed. |
-| Steering vector | Residual after layers 24–30 | Start of the decision zone, strong output scales. |
+| Steering vector | Residual after layers 24–30 | Start of the KV-shared zone, mid-to-high output scales (0.42–0.72). |
 | LoRA for style / format | `attn_q` + MLP in 24–40 | Loudest writers; only q matters there. |
 | Per-token tweaks | PLE table slice of one layer | A direct per-token, per-layer knob. |
 | **Leave alone** | Layers 0–8, layer 23, `layer_output_scale` everywhere | Extreme gains; layer 23's 26 → 0.065 balance is delicate. |
-| **No effect** | `attn_k` / `attn_v` in layers 24–41 | Those layers reuse earlier K/V; edits there do nothing. |
+| **No effect** | `attn_k` / `attn_v` in layers 24–41 | Those layers reuse earlier K/V; edits there likely do nothing. |
 
 > To confirm a zone before editing, run a probe: log the residual norm after each layer and check that layer 23's write really is small.
 
@@ -169,4 +169,4 @@ Observations:
 
 ## 7. Verdict
 
-The most unusual design in this collection. Gemma 4 E4B hides a 2.8B lookup table behind a 4B compute core, shares memory across its top 18 layers and runs with extreme internal gains. It is efficient at run time and knowledgeable for its compute, but large on disk and touchy to edit. The KV-shared top half and the layer-23 hinge are the two facts any fine-tune must respect.
+The most unusual design in this collection. Gemma 4 E4B hides a 2.8B lookup table behind a 4B compute core, shares memory across its top 18 layers and runs with extreme internal gains. It should be efficient at run time (not timed here), but it is large on disk and likely touchy to edit. The KV-shared top half and the layer-23 hinge are the two facts any fine-tune must respect.

@@ -103,11 +103,11 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | Model | Headline finding |
 |---|---|
 | **TwIL-8B** | Gains climb steadily with depth; the last 9 layers are the loudest, so the "decision" zone dominates. |
-| **LFM3-1.7B** | Block 18's attention is nearly off (q-norm ≈ 0.09) in **all six** LFM3 models. It is the best pruning candidate. |
-| **Dory 4B** | Layers 8–27 run **4 times**, so 4B params give 192 blocks of compute. Edit outside the loop. |
-| **Coding QLoRA** | 52% of the change is in the MLP. Layer 2's `down_proj` collapsed to rank 2.3 of 16. |
-| **Qwen3.5-4B** | Linear-attention decay drops from 7–13 (layers 1–2) to 0.2–0.5 (layers 20–30): short memory early, long memory deep. Only 8 of 32 layers keep a KV cache. |
-| **Qwen3.5-4B 3D-Coder** | Every MLP shares a sink channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
+| **LFM3-1.7B** | Block 18's attention is nearly off (q-norm ≈ 0.09) in **all six** LFM3 models. It is the best pruning candidate. Channel 397 has the largest post-attention norm gain in 15–18 of 24 layers across the family. |
+| **Dory 4B** | Layers 8–27 run **4 times**, so 4B params give 192 blocks of compute. Edit outside the loop. `residual_alpha` has outlier channels 1804, 1239 and 557 (up to 18.8× the median). |
+| **Coding QLoRA** | About 56% of the change (by summed norm) is in the MLP. Layer 2's `down_proj` collapsed to rank 2.3 of 16. |
+| **Qwen3.5-4B** | Linear-attention decay drops from 7–13 (layers 1–2) to 0.2–0.5 (layers 20–30), which suggests (not tested) short memory early and long memory deep. `ffn_down` writes most to hidden dim 0 in every layer (1.7–4.3× the median row). Only 8 of 32 layers keep a KV cache. |
+| **Qwen3.5-4B 3D-Coder** | Every MLP shares a weight outlier channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
 | **Phi-4-mini** | Attention is nearly off at layer 0 (0.04) and layer 31 (0.09); a smooth climb in between. |
 | **Gemma 4 E4B** | Attention gain peaks at 47 (layer 7). Layer 23's post-MLP gain of 26 is scaled down to 0.065. Layers 24–41 reuse earlier K/V. |
 | **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
@@ -129,7 +129,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | 🟧 | **d1-2B** | LFM3 non-causal judge + vision | 1.73B + 189M | Q4_K_M / Q8_0 | [read →](reviews/d1-2B.md) |
 | 🟧 | **d1-Omni-2B** | LFM3 non-causal judge + vision + hearing | 1.73B + 305M | Q8_0 | [read →](reviews/d1-Omni-2B.md) |
 | 🟪 | **Coding QLoRA adapter** | LoRA r16 on Qwen3-1.7B | 17.4M | fp32 | [read →](reviews/Coding-QLoRA-adapter.md) |
-| 🟥 | **Qwen3.5-4B** | Qwen3.5 hybrid linear+full attention + vision + MTP | 4.33B + 334M | Q4_K_M / F16 | [read →](reviews/Qwen3.5-4B.md) |
+| 🟥 | **Qwen3.5-4B** | Qwen3.5 hybrid linear+full attention + vision + MTP (MTP in the bartowski GGUF only) | 4.33B + 334M | Q4_K_M / F16 | [read →](reviews/Qwen3.5-4B.md) |
 | 🟥 | **Qwen3.5-4B 3D-Coder** | Qwen3.5-4B fine-tune for 3D / Three.js code | 4.33B + 334M | F16 | [read →](reviews/Qwen3.5-4B-3D-Coder.md) |
 | 🟫 | **Phi-4-mini-instruct** | Microsoft Phi-4, dense, 32 layers | 3.84B | Q4_K_M | [read →](reviews/Phi-4-mini.md) |
 | 🟨 | **Gemma 4 E4B-it** | Gemma 4, per-layer embeddings, sliding/global, KV sharing | 7.52B (≈4B core) | Q4_K_M | [read →](reviews/Gemma-4-E4B.md) |
@@ -140,7 +140,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 > [!NOTE]
 > Phi-4-mini, Gemma 4 E4B and the Coding QLoRA adapter are no longer installed on the test machine. Their reviews are kept for reference.
 
-🔗 **Family overview:** [LFM3-family-comparison.md](reviews/LFM3-family-comparison.md) explains how the six LFM3 models share one LLM and which encoders are byte-identical.
+🔗 **Family overview:** [LFM3-family-comparison.md](reviews/LFM3-family-comparison.md) explains how the six LFM3 models share one LLM and how closely their encoders match (most are near-copies, not byte-identical).
 
 ---
 

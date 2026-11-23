@@ -64,9 +64,9 @@ A **small coding fine-tune** for **Qwen/Qwen3-1.7B**: rank 16, alpha 32, dropout
 
 Per-module total (sum over 28 layers): q 1.54 · k 1.11 · v 1.19 · o 1.64 · **gate 2.62 · up 2.68** · down 1.61.
 
-- **~52% of the change is in the MLP** (gate/up/down). The adapter mostly taught *knowledge and habits*, not new attention patterns.
+- **~56% of the change is in the MLP** (gate/up/down) by summed ΔW norm (~68% by squared norm). This suggests the adapter mostly changed MLP content rather than attention patterns.
 - **Even across depth:** total ΔW is 0.163–0.182 in every layer. Highest at L2 (0.182) and L13 (0.181), gently fading over L21–27 to 0.163.
-- **k_proj is smallest** (0.037–0.042): where to look barely changed.
+- **k_proj is smallest** (0.037–0.042): key projections likely changed least.
 - **⚠ L2 `down_proj` effective rank 2.3** (all other layers 10.4–13.8). That layer's MLP update collapsed to ~2 directions. Possible causes: a few dominant training examples, or a learning-rate spike. **Check it**: try the adapter with L2 down_proj zeroed and compare outputs.
 
 ---
@@ -80,11 +80,11 @@ Per-module total (sum over 28 layers): q 1.54 · k 1.11 · v 1.19 · o 1.64 · *
 ## 5. Weak spots
 
 1. **L2 rank collapse** (see above).
-2. **fp32 storage** doubles the file size for no quality gain; bf16 would do.
+2. **fp32 storage** doubles the file size versus bf16; bf16 would likely lose little.
 3. **Uniform depth profile** suggests no layer targeting; a coding LoRA might do as well with only MLPs of L8–24.
 
 ---
 
 ## 6. Verdict
 
-A **clean, standard coding LoRA** that mainly reshapes Qwen3-1.7B's MLP knowledge. One flaw to check: **layer 2's down-projection is nearly rank-2**.
+A **clean, standard coding LoRA** whose largest updates are in Qwen3-1.7B's MLPs. One flaw to check: **layer 2's down-projection is nearly rank-2**.
