@@ -54,9 +54,9 @@ tokens ─► embed (tied) ─► L0-2 entry ─► L3-19 middle ─► L20-31 d
 
 | Zone | Layers | Evidence |
 |---|---|---|
-| Entry | 0–2 | DeltaNet decay `A` is 7–13: very short memory |
+| Entry | 0–2 | DeltaNet \|A\| is 7–13 (memory length also depends on dt bias; see the base review) |
 | Middle | 3–19 | strongest layer-specific MLP writers (L13–17); vocabulary readout is noise |
-| Deep | 20–31 | `post_attention_layernorm` jumps 0.10 → 0.15 at L20 and climbs to 0.42 by L29; `A` drops to 0.2–0.47 (long memory) |
+| Deep | 20–31 | `post_attention_layernorm` jumps 0.10 → 0.15 at L20 and climbs to 0.42 by L29; \|A\| drops to 0.2–0.47 (not by itself long memory; dt bias rises here) |
 | MTP | 32 | draft head, not on the main path |
 
 ### The shared dim-0 direction
@@ -85,7 +85,7 @@ tokens ─► embed (tied) ─► L0-2 entry ─► L3-19 middle ─► L20-31 d
 
 ### Linked layers
 
-Pairs whose top two layer-specific directions overlap (\|cos\| > 0.4):
+Pairs whose top two layer-specific directions overlap (\|cos\| ≥ 0.4):
 
 | Pair | \|cos\| |
 |---|---|
@@ -127,13 +127,13 @@ L15 → L16 → L17 act as a chain. An edit should cover the pair, not one layer
 
 | Goal | Best place | Why |
 |---|---|---|
-| Remove a failure direction (loops, truncation, broken code) | `layers.15.mlp.down_proj` + `layers.16.mlp.down_proj` | strongest middle writer and its linked partner; same slot as the 0.8B blog edit at L15 |
-| Second target | `layers.19.mlp.down_proj` | most one-directional middle layer, last full attention before the deep zone; matches the blog's L19 |
+| Remove a failure direction (loops, truncation, broken code) | `layers.15.mlp.down_proj` + `layers.16.mlp.down_proj` | strongest middle writer and its linked partner; same slot as an earlier 0.8B edit at L15 reported in a blog post (source not recorded here) |
+| Second target | `layers.19.mlp.down_proj` | most one-directional middle layer, last full attention before the deep zone; matches that blog post's L19 (source not recorded) |
 | Only if probing peaks there | L17, L13–14 `down_proj` | linked writers |
 | Steering vector | residual after L19 | zone boundary |
 | **Leave alone** | L0–2, `A_log` / `dt_bias` / `conv1d`, every norm, embeddings (tied), MTP, vision tower, **hidden dim 0**, **L27**, **L31** | global breakage or output-shaping features |
 
-Recommended edit size: top 64 neurons per target layer, `W[:,j] -= α·d(dᵀW[:,j])` with α = 0.5–1.0. Three layers ≈ 0.49M weights (0.012% of the model). Project dim 0 and the shared direction out of `d` first.
+Recommended edit size: top 64 neurons per target layer, `W[:,j] -= α·d(dᵀW[:,j])` with α = 0.5–1.0. Three layers ≈ 0.49M weights (0.011% of the 4.33B LLM). Project dim 0 and the shared direction out of `d` first.
 
 ---
 
@@ -174,4 +174,4 @@ What it shows:
 - **A length limit alone caused a new bug.** In 9 answers the model wrote the page as escaped HTML with no code block. Asking for one raw ```` ```html ```` block removed it completely.
 - **What's left is small.** The only loops (lod, fireworks) happen after hitting the cap. Answers are 43% shorter. The cost is slightly weaker requirement-following than the compact prompt (0.80 vs 0.83), still above the baseline.
 
-**Updated verdict:** for this fine-tune, the prompt is the right fix. It took the model from 30 to 43 good out of 50 without touching a weight. The weight map in section 6 stays valid, but nothing in these results points to a specific layer to edit, so no surgery was done. This matches the research: prompt and harness optimisation beats weight edits for skill-level behaviour.
+**Updated verdict:** for this fine-tune, the prompt is the right fix. It took the model from 30 to 43 good out of 50 without touching a weight. The weight map in section 6 stays valid, but nothing in these results points to a specific layer to edit, so no surgery was done. This is consistent with the view that prompt and harness changes should be tried before weight edits; it is one test on one model, not a general result.

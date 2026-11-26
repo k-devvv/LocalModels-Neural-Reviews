@@ -151,7 +151,7 @@ This first/last-eighth plus every-third-layer pattern is llama.cpp's fixed Q4_K_
 ## 5. Weak spots
 
 1. **Thinking uses a lot of tokens.** On long prompts it can run out of budget before it writes the answer. Our SWE test had to give it a large thinking budget.
-2. **4-bit is a loss.** The Q4 file is slightly less precise than the original weights. It also can't be trained directly, because training needs BF16 weights.
+2. **4-bit is a loss.** The Q4 file is slightly less precise than the original weights. Standard fine-tuning tools expect BF16/FP16 weights, so this file is not a direct training base.
 3. **Speed on 6 GB.** 16k context is about the comfortable limit. The full 128k won't fit on this GPU.
 4. **The decision layers (34–39) may be sensitive (untested).** Their MLP pre-norm gains are about 1.5–3× the core's (1.97–3.99 vs ~1.3). But pre-norm gains rise with depth in most pre-norm models to keep up with the growing residual stream, and layer-pruning work finds deep layers among the *most* removable (arXiv:2403.17887). Check with `tools/ablate_ppl.py` before treating them as fragile.
 

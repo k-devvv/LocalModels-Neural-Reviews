@@ -114,7 +114,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | **Phi-4-mini** | Attention is nearly off at layer 0 (0.04) and layer 31 (0.09); a smooth climb in between. |
 | **Gemma 4 E4B** | Attention gain peaks at 47 (layer 7). Layer 23's post-MLP gain of 26 is scaled down to 0.065. Layers 24–41 reuse earlier K/V. |
 | **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
-| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0; gains more than double from layer 1 to 2, then rise gently with depth. |
+| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0; attention gain more than doubles from layer 1 to 2, then rise gently with depth. |
 | **glb-coder** | Light fine-tune of Qwen3.5-4B: ~1.2–1.3% weight-RMS drift vs ~0.1% for 3D-Coder. |
 
 ---
@@ -124,7 +124,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | | Model | Base / type | Params | Quant | Review |
 |---|---|---|---|---|---|
 | 🟦 | **TwIL-8B** | IBM Granite 8B, dense, 40 layers | 8.79B | Q4_K_M | [read →](reviews/TwIL-8B.md) |
-| 🟩 | **Nemotron-Labs Dory 4B** | looped, norm-free, 36 layers ×4 loop | 3.98B | Q5_K_M | [read →](reviews/Nemotron-Dory-4B.md) |
+| 🟩 | **Nemotron-Labs Dory 4B** | looped, norm-free, 36 layers (20 run ×4) | 3.98B | Q5_K_M | [read →](reviews/Nemotron-Dory-4B.md) |
 | 🟧 | **LFM3-1.7B** | LFM3 hybrid conv+attention, text | 1.73B | Q4_K_M | [read →](reviews/LFM3-1.7B.md) |
 | 🟧 | **LFM3-VL-2B** | LFM3 + vision | 1.73B + 189M | Q4_K_M / Q8_0 | [read →](reviews/LFM3-VL-2B.md) |
 | 🟧 | **LFM3-Audio-2B** | LFM3 + hearing + speech out | 1.73B + 285M | Q4_K_M | [read →](reviews/LFM3-Audio-2B.md) |
@@ -149,7 +149,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 
 ## 🧭 How to read a review
 
-Every review has the same sections:
+Every full review has these sections (the glb-coder note and the LFM3 family overview are shorter):
 
 1. **Summary**: what the model is, in two lines.
 2. **The model in one picture**: its skeleton.

@@ -70,14 +70,14 @@ The weights show a clear plan: `ssm_a` (\|A\|) is large in early linear layers a
 |---|---|---|---|---|
 | **Entry** | 0–2 | 1.09–1.14 | 0.95–1.0 | Linear layers with very fast decay (`ssm_a` 7–13 at layers 1–2): short, local memory. Layer 0's decay is tiny (0.09). |
 | **Middle** | 3–19 | 1.04–1.24 | ≈1.0 | Steady and calm. Decay 1.6–3.5, then drops below 1 around 16–18. |
-| **Deep** | 20–31 | 1.28–1.40 | 1.15–1.42 | Gains jump. Linear \|A\| falls to 0.20–0.47; with the dt bias also changing, this does not by itself mean slower forgetting (not tested). |
+| **Deep** | 20–31 | 1.13–1.40 (linear 1.28–1.40) | 1.15–1.42 | Gains jump. Linear \|A\| falls to 0.20–0.47; with the dt bias also changing, this does not by itself mean slower forgetting (not tested). |
 | **MTP** | 32 | 1.30 | n/a | Separate head that guesses the token after next. |
 
 Observations:
 
 - **Decay settings fall with depth.** `ssm_a` (how fast the linear state forgets) goes from 7–13 in layers 1–2 to 0.2–0.5 in layers 20–30. The `ssm_dt` bias falls with it (3–4 → 1.7–2.9). In Gated DeltaNet the per-step decay is \|A\| × softplus(dt_bias + input term), so \|A\| alone does not give memory length. In the sibling [Qwen3.5-9B](Qwen3.5-9B.md), combining \|A\| with the dt bias puts the slowest baseline decay in the middle layers (lowest at 16, 18 and 20), not the deepest ones. The same check per head is still to do here; nothing was tested with prompts.
 - **Full-attention layers stay quieter** than their linear neighbours in the deep zone (attention gain 1.13–1.22 vs 1.28–1.40). They do precise lookups; the linear layers do the bulk mixing.
-- **q/k norms peak at layer 19** (1.64), right before the deep zone starts. That is the sharpest full-attention lookup in the stack.
+- **q/k norms peak at layer 19** (1.64) among the 32 main layers (MTP block: 1.75), right before the deep zone starts. That is the sharpest full-attention lookup in the stack.
 - **MLP writes are loudest at the ends:** `ffn_down` RMS is 0.0089 at layer 0, about 0.0066 in the middle and 0.0087 at layer 31.
 - **One output channel stands out in every MLP (new, re-measured).** In all 32 layers, the `ffn_down` row for hidden dimension 0 has the largest RMS, 1.7–4.3× the per-layer median row. It is strongest in layers 0–2 and weakens toward layer 30. This is a weight outlier channel; whether it carries a large activation at run time was not measured. Avoid editing dimension 0.
 
@@ -127,7 +127,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 
 - Attention norm climbs from 0.54 (layer 0) to 1.57 (layer 20).
 - The **MLP norm explodes in the second half**: about 1 in layers 1–13, then 3.1 → 5.3 → 8.4 → **12.1 at layer 21**. Deep vision layers are where image features get pushed hardest.
-- Attention output RMS stays flat at about 0.013.
+- Attention output RMS stays at about 0.013–0.014 (0.018 at layer 23).
 
 #### qwen35_proj · `v.blk` (24 blocks)
 
@@ -171,7 +171,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 ## 4. What's strong
 
 1. **Cheap long context.** Only 8 of 32 layers keep a KV cache, so 262K context fits in far less memory than a dense 4B model.
-2. **Orderly decay plan.** Decay values fall steadily from early to deep layers.
+2. **Orderly decay parameters.** \|A\| falls steadily from early to deep layers (the effective forgetting rate also depends on dt bias).
 3. **Built-in speed-up.** The MTP block allows speculative decoding without a separate draft model.
 4. **Vision included** with a full-precision encoder.
 5. **Higher-precision quant for some parts.** Linear qkv, MTP and embedding are at 6–8 bits (by llama.cpp's type rules, not a per-model choice).
@@ -192,7 +192,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 | Fact edit (ROME-style) | MLP of layers 8–18 (start of a sweep) | ROME picks its layer by causal tracing on activations (arXiv:2202.05262), and tracing peaks do not reliably predict the best edit layer (arXiv:2301.04213). Sweep layers and score edit success. |
 | Steering vector | Residual after layer 19 | Last calm layer before the loud deep zone; q/k peak shows it's a focus point. |
 | Long-context behaviour | Full-attention layers 23, 27, 31 | They do the exact lookups the linear layers can't. |
-| LoRA for style / format | Linear `attn_qkv` + `ssm_out` in 20–31 | Deep zone shapes the output; memory is long there. |
+| LoRA for style / format | Linear `attn_qkv` + `ssm_out` in 20–31 | Deep zone shapes the output. |
 | Vision tweaks | Projector `mm.0` / `mm.2` | Small, sits between two frozen stacks. |
 | **Leave alone** | Layers 0–2, block 32 (MTP), `ssm_a` / `ssm_dt` everywhere, hidden dim 0 | Changing decay breaks memory; MTP must match the main head. |
 
@@ -202,4 +202,4 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 
 ## 7. Verdict
 
-The most advanced design in this collection. Qwen3.5-4B swaps three out of four attention layers for a recurrent memory, adds a speculative-decoding head and a full-precision vision encoder, and still fits a 6 GB GPU. The weights show an orderly design: fast decay early, slow decay deep, loud layers at the end. Best pick here for long documents and images.
+The most advanced design in this collection. Qwen3.5-4B swaps three out of four attention layers for a recurrent memory, adds a speculative-decoding head and a full-precision vision encoder, and still fits a 6 GB GPU. The weights show an orderly design: large |A| early, small |A| deep (forgetting rate also depends on dt bias), loud layers at the end. Best pick here for long documents and images.

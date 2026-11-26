@@ -59,11 +59,11 @@ The layer story matches the 4B: early linear layers have the largest \|A\|, deep
 
 ## 3. What the layers do
 
-> **Caveat.** These are weight statistics, not behaviour tests. A norm gain says how loudly a layer writes into the residual stream; it does not say what the layer "knows". Read zones as hints, not proof.
+> **Caveat.** These are weight statistics, not behaviour tests. A norm gain says how loudly a layer reads from the residual stream; it does not say what the layer "knows". Read zones as hints, not proof.
 
 | Zone | Layers | Attention gain | MLP gain | What it means |
 |---|---|---|---|---|
-| Entry | 0–2 | attn_norm 1.03–1.09 | post-attn 0.87–0.91 | Layer 0 barely decays its memory (0.046) and has a mean dt bias of +2.37, driven by a few large positive heads (max 18.5): it passes tokens through almost raw. Layers 1–2 jump to the strongest decay in the model (6.1, 12.6): very short memory, local patterns. |
+| Entry | 0–2 | attn_norm 1.03–1.09 | post-attn 0.87–0.91 | Layer 0 has the smallest \|A\| (0.046) but a mean dt bias of +2.37, driven by a few large positive heads (max 18.5), so its baseline decay (about 0.11 from layer means) is not small; per-head values were not computed. Layers 1–2 jump to the strongest decay in the model (6.1, 12.6): very short memory, local patterns. |
 | Early | 3–14 | 1.0–1.2 | 0.93–1.00 | Decay settles at 1.8–3.9. Short-to-medium memory. The full-attention q/k norms climb from 1.34 to 1.58. |
 | Middle | 15–19 | ~1.0–1.1 | ~0.97–1.0 | Decay falls to 0.8–2.6. q/k norms peak (1.59 at layers 15 and 19): which suggests the sharpest global attention may be here. |
 | Late | 20–31 | 1.03–1.24 | 1.04–1.33 | Decay drops to 0.16–0.44: the smallest |A| (suggesting slower decay, partly offset by higher dt). dt bias rises from about −3 toward 0. Post-attention gain peaks at **1.325 on layer 29**. ssm_norm rises from 0.81–0.87 (20–25) to 1.15 (30). This is where the model writes hardest. |
@@ -71,7 +71,7 @@ The layer story matches the 4B: early linear layers have the largest \|A\|, deep
 **Observations**
 
 - **|A| shrinks with depth (suggesting slower decay), though the rising dt bias partly offsets this.** ssm_a decay goes 12.6 (layer 2) → ~3 (early) → ~1.5 (middle) → 0.16–0.44 (late). Same plan as the 4B, at a larger scale.
-- **dt bias flips in the last third.** It sits at −2.9 to −4.2 up to layer 19, then rises to −2.0 (21) and −0.99 (22), hovers near 0 at layers 26–29 (+0.09, +0.01, −0.14), and is back to −1.1 at 30. In Gated DeltaNet the dt bias only enters the decay gate (decay per step = \|A\| × softplus(dt_bias + input term)); write strength is set by the separate beta gate. So a higher dt here means faster forgetting, not bolder writes. Using layer means, \|A\| × softplus(dt_bias) is about 0.14–0.24 in layers 1–5, 0.016–0.067 in layers 8–21 (lowest at 16, 18 and 20), and 0.03–0.19 in layers 22–30 (approximate: per-head values and the input term were not computed).
+- **dt bias flips in the last third.** It sits at −2.9 to −4.2 in layers 1–20, then rises to −2.0 (21) and −0.99 (22), hovers near 0 at layers 26–29 (+0.09, +0.01, −0.14), and is back to −1.1 at 30. In Gated DeltaNet the dt bias only enters the decay gate (decay per step = \|A\| × softplus(dt_bias + input term)); write strength is set by the separate beta gate. So a higher dt here means faster forgetting, not bolder writes. Using layer means, \|A\| × softplus(dt_bias) is about 0.14–0.24 in layers 1–5, 0.016–0.067 in layers 8–21 (lowest at 16, 18 and 20), and 0.03–0.19 in layers 22–30 (approximate: per-head values and the input term were not computed).
 - **Full-attention sharpness is a hump.** q/k norms run 1.34 → 1.59 (middle) → 1.42 (last). The middle full-attention layers are the most selective.
 - **Late full-attention layers write louder.** attn_output RMS rises from 0.015 to 0.021 (layer 27), and v RMS climbs to 0.029 at layer 31.
 - **The MLP is quiet everywhere.** ffn_up RMS is 0.011–0.013 across all layers, so the MLP weights are fairly flat compared with the norm gains, which carry most of the depth-wise change.
@@ -132,7 +132,7 @@ The recurrent path (qkv and ssm_out at Q5_K, alpha and beta at Q8_0) and the fir
 ## 4. What's strong
 
 - **Long context by design.** 262K positions, with only 8 layers paying the full-attention KV cost. The other 24 keep a fixed-size state.
-- **A clean depth plan.** The decay, dt bias and gain curves are broadly trend with depth, with some jitter (e.g. decay 0.77 → 2.56 → 0.90 at layers 16–18). No single layer dominates the gains.
+- **A clean depth plan.** The decay, dt bias and gain curves broadly trend with depth, with some jitter (e.g. decay 0.77 → 2.56 → 0.90 at layers 16–18). No single layer dominates the gains.
 - **Untied head.** A separate Q6_K output matrix gives the head its own capacity, unlike the 4B's shared embedding.
 - **Same family as the 4B.** Prompts, templates and tools that work on Qwen3.5-4B carry over.
 

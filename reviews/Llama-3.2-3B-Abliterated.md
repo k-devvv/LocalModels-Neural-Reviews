@@ -12,7 +12,7 @@ This is Meta's Llama-3.2-3B-Instruct with **abliteration** applied: a refusal di
 
 The whole file is **Q8_0**, so the numbers below are close to the original bf16 weights. The layer profile is the classic Llama shape: very quiet first layers, gains that climb steadily with depth, and a small drop in the last two layers.
 
-> **What this review cannot show.** Abliteration changes the weights by a tiny rank-1 edit. It was not measured here. It can be, from this file alone: abliteration orthogonalises every matrix that writes to the residual stream against one direction (arXiv:2406.11717), so that direction shows up as a shared near-null direction of the embedding, `attn_output` and `ffn_down` weights. `tools/abliteration_check.py` finds it; diffing against the original Instruct weights with `tools/drift.py` would confirm it. Everything below describes the model as it is, not what was removed.
+> **What this review cannot show.** Abliteration changes the weights typically by a rank-1 edit per matrix. It was not measured here. It can be, from this file alone: abliteration orthogonalises every matrix that writes to the residual stream against one direction (arXiv:2406.11717), so that direction shows up as a shared near-null direction of the embedding, `attn_output` and `ffn_down` weights. `tools/abliteration_check.py` finds it; diffing against the original Instruct weights with `tools/drift.py` would confirm it. Everything below describes the model as it is, not what was removed.
 
 ---
 
@@ -60,7 +60,7 @@ The whole file is **Q8_0**, so the numbers below are close to the original bf16 
 
 | Zone | Layers | Attention gain | MLP gain | What it means |
 |---|---|---|---|---|
-| Entry | 0–1 | 0.09–0.14 | ~0.14 | Very small gains. Layer 0's q and k weights are the largest in the model (q 0.038, k 0.044), but its attn_output is the smallest (0.012). Typical "token identity and position" layers. |
+| Entry | 0–1 | 0.09–0.14 | 0.14–0.17 | Very small gains. Layer 0's q and k weights are the largest in the model (q 0.038, k 0.044), but its attn_output is the smallest (0.012). Typical "token identity and position" layers. |
 | Early | 2–9 | 0.32 → ~0.38 | rising | Gains more than double from layer 1 to layer 2 (0.14 → 0.32), then hover around 0.30–0.38. |
 | Middle | 10–20 | ~0.36–0.46 | ~0.27–0.37 | Smooth growth with no spikes. The bulk of the processing. |
 | Late | 21–27 | peak 0.493 (layer 25) | peak 0.464 (layer 26) | The loudest layers. attn_output RMS reaches 0.020 at layers 26–27. Gains drop slightly in the last 1–2 layers (0.454 / 0.422 attention, 0.431 MLP). |
@@ -124,7 +124,7 @@ Nowhere special: every matrix is Q8_0 and the norms are F32. At 8 bits the quant
 
 - **Fewer guardrails.** Abliteration removes refusals, not only bad ones. Do not put it in front of untrusted users without your own filter.
 - **Possible small quality loss.** Abliterated models sometimes lose a little reasoning or instruction-following. This review cannot measure that.
-- **Older and smaller than Qwen3.5.** The 128K context, smaller vocabulary and 3B size put it behind the Qwen3.5-4B on most tasks.
+- **Older and smaller than Qwen3.5.** The 128K context, smaller vocabulary and 3B size likely put it behind the Qwen3.5-4B (not benchmarked here).
 - **Bigger file than its size suggests.** This 3.2B model at Q8_0 is about 3.4 GB, similar to or larger than a 4B Q4_K_M file (about 2.7–3.4 GB), in exchange for near-lossless precision.
 
 ## 6. Surgical map
@@ -141,4 +141,4 @@ Nowhere special: every matrix is Q8_0 and the norms are F32. At 8 bits the quant
 
 ## 7. Verdict
 
-A clean, standard Llama-3.2-3B at near-full precision with the refusals removed. The layer profile is textbook and healthy. Use it when you need an uncensored small model that every tool understands; for general quality, Qwen3.5-4B is stronger.
+A clean, standard Llama-3.2-3B at near-full precision with the refusals removed. The layer profile is textbook and healthy. Use it when you need an uncensored small model that every tool understands; for general quality, Qwen3.5-4B is likely stronger.

@@ -206,7 +206,7 @@ Measured highlights:
 
 1. **Most complete model in the lab:** 3 input senses, 2 output modes.
 2. **Reuses parts:** the audio generator is mostly byte-identical to LFM3-Audio's (97 of 143 tensors); the audio encoder has the same design but different weights (~12% relative difference).
-3. **Stronger vision encoder** than LFM3-VL (weights ~2× larger RMS, adapter norm 1.0 vs 0.45).
+3. **Larger-weight vision encoder** than LFM3-VL (weights ~2× larger RMS, adapter norm 1.0 vs 0.45).
 
 ## 6. Weak spots
 
@@ -224,8 +224,8 @@ Measured highlights:
 | Steering vector | **residual after L10–16** | middle of the stack, before the exit zone amplifies |
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
 | Revive / prune | **L18 attention** | near-uniform attention (small q/k gains) still writes a context average through v/o; test skipping it with `tools/ablate_ppl.py` before pruning or re-training |
-| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
-| Projector | **adapter (`mm.*`) only** | the encoders closely match sibling models; tune the adapter, not the tower |
+| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest post-norm gains (L23 drifted most from the base; L20–22 least) |
+| Projector | **adapter (`mm.*`) only** | the vision encoder closely matches siblings; the audio encoder shares only its design; tune the adapter, not the tower |
 
 ---
 

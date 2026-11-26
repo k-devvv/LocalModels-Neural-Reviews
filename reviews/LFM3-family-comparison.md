@@ -8,6 +8,8 @@ Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-a
 
 ## Lineage (LLM drift = mean relative change of norm gains; 0 = identical)
 
+This table averages over all norm tensors; the per-model pages average per block first, so their averages differ slightly (e.g. VL 0.265 here vs 0.261 there).
+
 | | LFM3 | d1 | d1-Omni | Audio | Omni | VL |
 |---|---|---|---|---|---|---|
 | **LFM3-1.7B** | – | 0.186 | 0.087 | 0.138 | 0.138 | 0.265 |
@@ -44,7 +46,7 @@ Drift is symmetric, so these lines show similarity, not which model was trained 
 | Projector | – | 189M | 305M | 285M | 475M | 189M |
 
 - **L18 attention has tiny q/k gains in every model.** It was already small in the base and no fine-tune raised it. By weights it is likely the best candidate for pruning (untested).
-- **Output norm grows with every derivative**: every fine-tune ended with a larger final norm gain (1.93 → 2.39–2.91).
+- **Every sibling has a larger output norm than LFM3-1.7B** (1.93 → 2.39–2.91).
 
 ## Which one to use
 

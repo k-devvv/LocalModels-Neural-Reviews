@@ -55,7 +55,7 @@
 | **Entry** | 0–1 | conv mixer is strongest here (conv RMS highest at L0); MLP gain high at L1 | turn raw tokens into local word/phrase features |
 | **Early mix** | 2–7 | first global attention at L2; post-norms still small | first look across the whole context |
 | **Core** | 8–17 | flattest stretch; MLP gain lowest at L9 (0.079) | steady meaning-building; best place for edits |
-| **Dead-ish attention** | 18 | q/k norm only 0.061/0.065 vs ~1.0+ elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
+| **Dead-ish attention** | 18 | q/k norm only 0.061/0.065 vs 0.81–1.16 elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
 | **Exit** | 19–23 | post-norms climb to their max; top-4 MLP pre-norm gains of the whole model (not only this zone) are L2, L1, L22, L4 | likely: commit to the answer and shape the next token |
 
 Other measured patterns:
@@ -148,7 +148,7 @@ Measured highlights:
 ## 5. What's strong
 
 1. **Lightweight vision tower** (189M with adapter, Q8_0 for precision).
-2. **Same image encoder as d1:** what one learns about images, the other shares.
+2. **Near-identical image encoder to d1's:** what one learns about images, the other shares.
 3. **Drift is even across all blocks** (0.18–0.31): a full, balanced re-train for image grounding.
 
 ## 6. Weak spots

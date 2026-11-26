@@ -169,4 +169,4 @@ Observations:
 
 ## 7. Verdict
 
-The most unusual design in this collection. Gemma 4 E4B hides a 2.8B lookup table behind a 4B compute core, shares memory across its top 18 layers and runs with extreme internal gains. It should be efficient at run time (not timed here), but it is large on disk and likely touchy to edit. The KV-shared top half and the layer-23 hinge are the two facts any fine-tune must respect.
+One of the most unusual designs in this collection. Gemma 4 E4B hides a 2.8B lookup table behind a 4B compute core, shares memory across its top 18 layers and runs with extreme internal gains. It should be efficient at run time (not timed here), but it is large on disk and likely touchy to edit. The KV-shared top 18 layers and the layer-23 hinge are the two facts any fine-tune must respect.

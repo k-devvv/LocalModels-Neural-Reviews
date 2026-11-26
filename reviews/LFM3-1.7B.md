@@ -126,7 +126,7 @@ Channel 397 has the largest `post_attention_norm` gain in 15 of 24 layers (about
 | Steering vector | **residual after L10–16** | middle of the stack, before the exit zone amplifies |
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
 | Revive / prune | **L18 attention** | near-uniform attention (small q/k gains) still writes a context average through v/o; test skipping it with `tools/ablate_ppl.py` before pruning or re-training |
-| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
+| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest post-norm gains |
 
 
 ---
