@@ -12,7 +12,7 @@
 
 Qwen3.5-9B is the big sibling of [Qwen3.5-4B](Qwen3.5-4B.md): the same **hybrid** design, with 24 linear-attention layers and 8 full-attention layers (one in every four), but wider (4096 vs 2560) and with an **untied** output head. This GGUF has **no MTP block**, so speculative decoding with the model's own head is not available from this file.
 
-The layer story matches the 4B: early linear layers decay fast, deep linear layers have the smallest decay rates (suggesting longer memory), and the residual gains get loud in the last third. At about 5.5 GB of Q4_K_M weights it will not fit fully in 6 GB VRAM, so expect partial CPU offload (an informal separate run gave about 9 tok/s; not part of this weight analysis).
+The layer story matches the 4B: early linear layers have the largest \|A\|, deep linear layers the smallest, and the residual gains get loud in the last third. Once the dt bias is factored in, the slowest baseline decay sits in the middle layers (lowest at 16, 18 and 20), not the deepest ones (see section 3). At about 5.5 GB of Q4_K_M weights it will not fit fully in 6 GB VRAM, so expect partial CPU offload (an informal separate run gave about 9 tok/s; not part of this weight analysis).
 
 ---
 
@@ -71,7 +71,7 @@ The layer story matches the 4B: early linear layers decay fast, deep linear laye
 **Observations**
 
 - **|A| shrinks with depth (suggesting slower decay), though the rising dt bias partly offsets this.** ssm_a decay goes 12.6 (layer 2) → ~3 (early) → ~1.5 (middle) → 0.16–0.44 (late). Same plan as the 4B, at a larger scale.
-- **dt bias flips in the last third.** It sits at −2.9 to −4.2 up to layer 19, then rises to −2.0 (21) and −0.99 (22), hovers near 0 at layers 26–29 (+0.09, +0.01, −0.14), and is back to −1.1 at 30. Higher dt means bigger update steps: the late linear layers write into their memory more boldly.
+- **dt bias flips in the last third.** It sits at −2.9 to −4.2 up to layer 19, then rises to −2.0 (21) and −0.99 (22), hovers near 0 at layers 26–29 (+0.09, +0.01, −0.14), and is back to −1.1 at 30. In Gated DeltaNet the dt bias only enters the decay gate (decay per step = \|A\| × softplus(dt_bias + input term)); write strength is set by the separate beta gate. So a higher dt here means faster forgetting, not bolder writes. Using layer means, \|A\| × softplus(dt_bias) is about 0.14–0.24 in layers 1–5, 0.016–0.067 in layers 8–21 (lowest at 16, 18 and 20), and 0.03–0.19 in layers 22–30 (approximate: per-head values and the input term were not computed).
 - **Full-attention sharpness is a hump.** q/k norms run 1.34 → 1.59 (middle) → 1.42 (last). The middle full-attention layers are the most selective.
 - **Late full-attention layers write louder.** attn_output RMS rises from 0.015 to 0.021 (layer 27), and v RMS climbs to 0.029 at layer 31.
 - **The MLP is quiet everywhere.** ffn_up RMS is 0.011–0.013 across all layers, so the MLP weights are fairly flat compared with the norm gains, which carry most of the depth-wise change.
@@ -148,7 +148,7 @@ The quantizer protected the recurrent memory path (qkv and ssm_out at Q5_K, alph
 | Goal | Best place | Why |
 |---|---|---|
 | Style / tone LoRA | late MLP + attn_output, layers 20–31 | The highest gains live here. Small changes show up strongly. |
-| Long-context recall | linear layers 20–30 (ssm_out, dt bias) | Long memory and bold update steps live here. |
+| Long-context recall | linear layers 16–21 (ssm_out, dt bias) | Slowest baseline decay once dt bias is included (layer means, not per head). |
 | Retrieval / copying | full-attention layers 11–19 (q, k) | Highest q/k norm gains (~1.59), which may mean the sharpest attention. |
 | Steering vectors | residual stream around layers 16–22 | The memory regime changes here. A good place to read and write concepts. |
 | Leave alone | layers 0–2, ssm_a, conv1d | The entry layers set the token-mixing base. Changing them likely affects everything downstream (not tested). |

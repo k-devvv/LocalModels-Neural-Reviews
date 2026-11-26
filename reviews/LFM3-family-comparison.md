@@ -16,12 +16,12 @@ Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-a
 | **LFM3-Audio-2B** | | | | – | **0.005** | 0.300 |
 
 ```
- LFM3-1.7B ──► d1-Omni-2B ──► LFM3-Audio-2B ≈ LFM3-Omni-2B   (one line)
+ LFM3-1.7B ── d1-Omni-2B ── LFM3-Audio-2B ≈ LFM3-Omni-2B   (one cluster)
      ╲
-      ╲……► d1-2B ──── LFM3-VL-2B                              (other line)
+      ╲…… d1-2B ──── LFM3-VL-2B                            (other cluster)
 ```
 
-**Audio and Omni have practically the same LLM** (0.005). d1-Omni sits between the base and them. d1 and VL form a separate pair.
+Drift is symmetric, so these lines show similarity, not which model was trained from which. **Audio and Omni have practically the same LLM** (0.005). d1-Omni sits between the base and them by similarity. d1 and VL form a separate pair.
 
 ## Shared parts
 

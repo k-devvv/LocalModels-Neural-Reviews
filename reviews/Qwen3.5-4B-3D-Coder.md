@@ -10,7 +10,9 @@
 
 ## 1. Summary
 
-This is a 3D / Three.js coding fine-tune of [Qwen3.5-4B](Qwen3.5-4B.md). The skeleton is the same: 32 layers, hybrid Gated DeltaNet + full attention, tied embeddings, one MTP layer. So this review skips what the base review already covers and goes deeper on the MLPs: **where each layer writes, and which layers work together.**
+This is a 3D / Three.js coding fine-tune of [Qwen3.5-4B](Qwen3.5-4B.md).
+
+> **Note:** the [glb-coder comparison](Qwen3.5-4B-GLB-3D-Coder.md) found this model's weights within about 0.1% of the base (norm and weight-RMS drift). So the findings below most likely describe base Qwen3.5-4B, not something the fine-tune added. Repeating the vocabulary readout on the base would confirm it. The skeleton is the same: 32 layers, hybrid Gated DeltaNet + full attention, tied embeddings, one MTP layer. So this review skips what the base review already covers and goes deeper on the MLPs: **where each layer writes, and which layers work together.**
 
 Three findings stand out:
 
@@ -111,7 +113,7 @@ L15 → L16 → L17 act as a chain. An edit should cover the pair, not one layer
 
 - A clean, balanced MLP stack: no overloaded neurons anywhere.
 - A clear middle zone with strong, structured writers (L13–17).
-- A readable output stage: L31 carries a code-specific feature, which fits a coding fine-tune.
+- A readable output stage: L31 carries a code-ending feature. Since the weights barely differ from the base, this is likely inherited from Qwen3.5-4B rather than added by the fine-tune.
 
 ## 5. Weak spots
 

@@ -167,7 +167,7 @@ Measured highlights:
 | Steering vector | **residual after L10–16** | middle of the stack, before the exit zone amplifies |
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
 | Revive / prune | **L18 attention** | near-flat attention; candidate to prune or to re-train with a small LoRA |
-| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
+| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest post-norm gains (L21 and L23 are among the blocks that drifted least from the base here) |
 | Projector | **adapter (`mm.*`) only** | the encoders closely match sibling models; tune the adapter, not the tower |
 
 ---
