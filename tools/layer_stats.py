@@ -51,6 +51,9 @@ def main():
         else:
             entry.update(matrix_stats(w.reshape(w.shape[0], -1) if w.ndim > 2 else w))
             hd = heads.get(short)
+            if isinstance(hd, (list, tuple, np.ndarray)):   # per-layer arrays (e.g. Qwen3.5 hybrid)
+                hd = hd[idx] if idx is not None and idx < len(hd) else next((x for x in hd if x), None)
+            hd = int(hd) if hd else None
             if hd and w.ndim == 2 and w.shape[0] % hd == 0:   # per-head RMS (rows grouped by head)
                 entry["head_rms"] = np.sqrt((w.reshape(w.shape[0] // hd, -1).astype(np.float64) ** 2).mean(1)).round(6).tolist()
         res["tensors"][t.name] = entry
