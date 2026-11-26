@@ -74,6 +74,8 @@ Mean relative change of every norm gain per block (0 = identical):
 
 Average **0.261**. Most changed: L10, L14, L18. Least changed: L23, L2, L21.
 
+> **Re-run note (Nov 2026):** `tools/drift.py` on the Ollama LFM3-1.7B vs LFM3-VL weights did not reproduce 0.261 (or the 0.265 quoted below). It gives a mean relative Frobenius change of 0.44, and a mean 1 − cosine of 0.106 (median 0.114). The table above used an unrecorded metric, so treat its absolute values as unverified; the per-layer ranking is the useful part. Raw output: [results/drift_lfm3_vl.json](../results/drift_lfm3_vl.json).
+
 ### Every LLM layer
 
 `·` = tensor not present in that block type. Norms are gains; matrices are RMS.
@@ -153,7 +155,7 @@ Measured highlights:
 
 ## 6. Weak spots
 
-1. **Furthest LLM from the base** (drift 0.265) and from Audio (0.300): text-only behaviour differs most.
+1. **Furthest LLM from the base** (drift 0.265 in the original run; not reproduced, see the re-run note above) and from Audio (0.300): text-only behaviour differs most.
 2. **Smaller vision weights** than Omni's encoder; adapter input norm 0.45 means it damps image features more.
 3. **L18 attention weakest of all** (q/k ≈0.06).
 
