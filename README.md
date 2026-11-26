@@ -105,17 +105,17 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 
 | Model | Headline finding |
 |---|---|
-| **TwIL-8B** | Gains climb steadily with depth; the last 9 layers are the loudest, so the "decision" zone dominates. |
+| **TwIL-8B** | Pre-norm gains climb steadily with depth and are highest in the last 9 layers. Whether that zone is "loud" or fragile needs the activation probe. |
 | **LFM3-1.7B** | Block 18's attention is nearly off (q-norm ≈ 0.09) in **all six** LFM3 models. It is the best pruning candidate. Channel 397 has the largest post-attention norm gain in 14–18 of 24 layers across the family. |
 | **Dory 4B** | Layers 8–27 run **4 times**, so 4B params give 192 blocks of compute. Edit outside the loop. `residual_alpha` has outlier channels 1804, 1239 and 557 (up to 18.8× the median). |
 | **Coding QLoRA** | About 56% of the change (by summed norm) is in the MLP. Layer 2's `down_proj` collapsed to rank 2.3 of 16. |
-| **Qwen3.5-4B** | Linear-attention \|A\| drops from 7–13 (layers 1–2) to 0.2–0.5 (layers 20–30), but the dt bias rises in the same layers, so the effective forgetting rate does not simply fall with depth (memory length not tested). `ffn_down` writes most to hidden dim 0 in every layer (1.7–4.3× the median row). Only 8 of 32 layers keep a KV cache. |
+| **Qwen3.5-4B** | Measured per head, decay \|A\|·softplus(dt_bias) is slowest in the middle (layers 9–20, mean 0.05–0.16) and faster early (0.2–0.6) and late (0.17–0.56), not slowest deep ([results](results/qwen35_4b.md)). `ffn_down` writes most to hidden dim 0 in every layer (1.7–4.3× the median row). Only 8 of 32 layers keep a KV cache. |
 | **Qwen3.5-4B 3D-Coder** | Weights are within ~0.1% of the base, so these are likely base Qwen3.5-4B traits. Every MLP shares a weight outlier channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
-| **Phi-4-mini** | Attention is nearly off at layer 0 (0.04) and layer 31 (0.09); a smooth climb in between. |
+| **Phi-4-mini** | Attention pre-norm gain is tiny at layer 0 (0.04) and layer 31 (0.09), with a smooth climb in between. Near-silent attention is likely but not measured on activations. |
 | **Gemma 4 E4B** | Attention gain peaks at 47 (layer 7). Layer 23's post-MLP gain of 26 is scaled down to 0.065. Layers 24–41 reuse earlier K/V. |
-| **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
-| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0; attention gain more than doubles from layer 1 to 2, then rise gently with depth. |
-| **glb-coder** | Light fine-tune of Qwen3.5-4B: ~1.2–1.3% weight-RMS drift vs ~0.1% for 3D-Coder. |
+| **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31), but with dt bias the slowest decay is mid-stack (16–20); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
+| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0. Diffed against base `llama3.2:3b`: mean weight drift 0.05, with rank-1 edits in `attn_output` and `ffn_down` of layers 9–24 (peak L24). Likely abliteration-style editing; not conclusive ([results](results/drift_llama32_abliteration.json)). |
+| **glb-coder** | Likely a light fine-tune of Qwen3.5-4B: ~1.2–1.3% weight-RMS drift vs ~0.1% for 3D-Coder. A per-tensor ‖ΔW‖ check has not been run. |
 
 ---
 
