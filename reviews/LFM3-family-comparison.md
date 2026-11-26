@@ -8,7 +8,7 @@ Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-a
 
 ## Lineage (LLM drift = mean relative change of norm gains; 0 = identical)
 
-This table averages over all norm tensors; the per-model pages average per block first, so their averages differ slightly (e.g. VL 0.265 here vs 0.261 there).
+This table appears to average over all norm tensors and the per-model pages per block, which probably explains why they differ slightly (e.g. VL 0.265 here vs 0.261 there); rerun `tools/drift.py` to settle it.
 
 | | LFM3 | d1 | d1-Omni | Audio | Omni | VL |
 |---|---|---|---|---|---|---|
