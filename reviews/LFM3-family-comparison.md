@@ -8,6 +8,8 @@ Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-a
 
 ## Lineage (LLM drift = mean relative change of norm gains; 0 = identical)
 
+This table appears to average over all norm tensors and the per-model pages per block, which probably explains why they differ slightly (e.g. VL 0.265 here vs 0.261 there); rerun `tools/drift.py` to settle it.
+
 | | LFM3 | d1 | d1-Omni | Audio | Omni | VL |
 |---|---|---|---|---|---|---|
 | **LFM3-1.7B** | – | 0.186 | 0.087 | 0.138 | 0.138 | 0.265 |
@@ -16,12 +18,12 @@ Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-a
 | **LFM3-Audio-2B** | | | | – | **0.005** | 0.300 |
 
 ```
- LFM3-1.7B ──► d1-Omni-2B ──► LFM3-Audio-2B ≈ LFM3-Omni-2B   (one line)
+ LFM3-1.7B ── d1-Omni-2B ── LFM3-Audio-2B ≈ LFM3-Omni-2B   (one cluster)
      ╲
-      ╲……► d1-2B ──── LFM3-VL-2B                              (other line)
+      ╲…… d1-2B ──── LFM3-VL-2B                            (other cluster)
 ```
 
-**Audio and Omni have practically the same LLM** (0.005). d1-Omni sits between the base and them. d1 and VL form a separate pair.
+Drift is symmetric, so these lines show similarity, not which model was trained from which. **Audio and Omni have practically the same LLM** (0.005). d1-Omni sits between the base and them by similarity. d1 and VL form a separate pair.
 
 ## Shared parts
 
@@ -44,7 +46,7 @@ Six local models share **one 24-block LLM skeleton** (13 short-conv + 11 gated-a
 | Projector | – | 189M | 305M | 285M | 475M | 189M |
 
 - **L18 attention has tiny q/k gains in every model.** It was already small in the base and no fine-tune raised it. By weights it is likely the best candidate for pruning (untested).
-- **Output norm grows with every derivative**: every fine-tune ended with a larger final norm gain (1.93 → 2.39–2.91).
+- **Every sibling has a larger output norm than LFM3-1.7B** (1.93 → 2.39–2.91).
 
 ## Which one to use
 

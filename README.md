@@ -53,11 +53,14 @@ Every review follows the same steps, using only the model file.
 
 | Tensor type | Number | Why it matters |
 |---|---|---|
-| **Norm vectors** (attention / MLP norm) | mean \|gain\| | How loudly the model lets that layer speak. A gain near 0 means the layer is nearly switched off. |
-| **Weight matrices** (q, k, v, o, gate, up, down) | RMS of the first 256 rows | How big the weights are. It also shows where quantization spent its bits. |
+| **Norm vectors** (attention / MLP norm) | mean \|gain\| | How strongly a norm scales its input. In plain pre-norm models a small gain also shrinks what the layer reads. Caveats: for Qwen3.5 and Gemma 1–3 GGUFs the stored value is 1 + w, so "near 0" means nothing; in models with post-norms or q/k norms (LFM3, Gemma 4, Qwen3.5 full attention) the pre-norm gain's overall scale is largely cancelled downstream, so it is not a measure of how loudly the layer writes. |
+| **Weight matrices** (q, k, v, o, gate, up, down) | RMS of the first 256 rows (current tables); full matrix and per head in `tools/layer_stats.py` | How big the weights are. Caveat: rows are output channels, so 256 rows can cover only 1–2 KV heads, only the Q part of a fused qkv, and (for `ffn_down`) an outlier dim like Qwen3.5's dim 0. Q4_K alone changes RMS by about 0.5%, so smaller differences are noise. Quant types per tensor follow llama.cpp's fixed rules, not model sensitivity. |
 | **Learned scales** (Dory: `residual_alpha`, gate scales) | value | These replace norms in norm-free models. |
 | **LoRA adapters** | ‖ΔW‖ for ΔW = B·A·(α/r), and effective rank | How much each module changed, and in how many directions. |
-| **Related models** | drift = mean relative change of norm gains | 0 means the same LLM. Shows which fine-tune came from which. |
+| **Related models** | drift = mean relative change of norm gains (current tables); per-tensor ‖ΔW‖/‖W‖ in `tools/drift.py` | 0 means identical norms. It shows similarity, not direction, and LoRA-merged fine-tunes barely change norms, so a small drift does not prove two LLMs are the same. |
+
+> [!NOTE]
+> The scripts are now in [`tools/`](tools/README.md). The tables in the reviews were made with the earlier first-256-rows method and will be regenerated with them.
 
 > [!NOTE]
 > All numbers are **measured from the weights**. Zone labels like "reading" or "decision" are **informed interpretation** of those numbers. They were not proven by activation probing. Treat them as a map, not ground truth.
@@ -103,15 +106,15 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | Model | Headline finding |
 |---|---|
 | **TwIL-8B** | Gains climb steadily with depth; the last 9 layers are the loudest, so the "decision" zone dominates. |
-| **LFM3-1.7B** | Block 18's attention is nearly off (q-norm ≈ 0.09) in **all six** LFM3 models. It is the best pruning candidate. Channel 397 has the largest post-attention norm gain in 15–18 of 24 layers across the family. |
+| **LFM3-1.7B** | Block 18's attention is nearly off (q-norm ≈ 0.09) in **all six** LFM3 models. It is the best pruning candidate. Channel 397 has the largest post-attention norm gain in 14–18 of 24 layers across the family. |
 | **Dory 4B** | Layers 8–27 run **4 times**, so 4B params give 192 blocks of compute. Edit outside the loop. `residual_alpha` has outlier channels 1804, 1239 and 557 (up to 18.8× the median). |
 | **Coding QLoRA** | About 56% of the change (by summed norm) is in the MLP. Layer 2's `down_proj` collapsed to rank 2.3 of 16. |
-| **Qwen3.5-4B** | Linear-attention decay drops from 7–13 (layers 1–2) to 0.2–0.5 (layers 20–30), which suggests (not tested) short memory early and long memory deep. `ffn_down` writes most to hidden dim 0 in every layer (1.7–4.3× the median row). Only 8 of 32 layers keep a KV cache. |
-| **Qwen3.5-4B 3D-Coder** | Every MLP shares a weight outlier channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
+| **Qwen3.5-4B** | Linear-attention \|A\| drops from 7–13 (layers 1–2) to 0.2–0.5 (layers 20–30), but the dt bias rises in the same layers, so the effective forgetting rate does not simply fall with depth (memory length not tested). `ffn_down` writes most to hidden dim 0 in every layer (1.7–4.3× the median row). Only 8 of 32 layers keep a KV cache. |
+| **Qwen3.5-4B 3D-Coder** | Weights are within ~0.1% of the base, so these are likely base Qwen3.5-4B traits. Every MLP shares a weight outlier channel on hidden dim 0. Remove it and L15 (+ linked L16) and L19 stand out as surgery targets; L27 is a digit feature, L31 shapes code endings. |
 | **Phi-4-mini** | Attention is nearly off at layer 0 (0.04) and layer 31 (0.09); a smooth climb in between. |
 | **Gemma 4 E4B** | Attention gain peaks at 47 (layer 7). Layer 23's post-MLP gain of 26 is scaled down to 0.065. Layers 24–41 reuse earlier K/V. |
 | **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
-| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0; gains more than double from layer 1 to 2, then rise gently with depth. |
+| **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0; attention gain more than doubles from layer 1 to 2, then rise gently with depth. |
 | **glb-coder** | Light fine-tune of Qwen3.5-4B: ~1.2–1.3% weight-RMS drift vs ~0.1% for 3D-Coder. |
 
 ---
@@ -121,7 +124,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | | Model | Base / type | Params | Quant | Review |
 |---|---|---|---|---|---|
 | 🟦 | **TwIL-8B** | IBM Granite 8B, dense, 40 layers | 8.79B | Q4_K_M | [read →](reviews/TwIL-8B.md) |
-| 🟩 | **Nemotron-Labs Dory 4B** | looped, norm-free, 36 layers ×4 loop | 3.98B | Q5_K_M | [read →](reviews/Nemotron-Dory-4B.md) |
+| 🟩 | **Nemotron-Labs Dory 4B** | looped, norm-free, 36 layers (20 run ×4) | 3.98B | Q5_K_M | [read →](reviews/Nemotron-Dory-4B.md) |
 | 🟧 | **LFM3-1.7B** | LFM3 hybrid conv+attention, text | 1.73B | Q4_K_M | [read →](reviews/LFM3-1.7B.md) |
 | 🟧 | **LFM3-VL-2B** | LFM3 + vision | 1.73B + 189M | Q4_K_M / Q8_0 | [read →](reviews/LFM3-VL-2B.md) |
 | 🟧 | **LFM3-Audio-2B** | LFM3 + hearing + speech out | 1.73B + 285M | Q4_K_M | [read →](reviews/LFM3-Audio-2B.md) |
@@ -146,7 +149,7 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 
 ## 🧭 How to read a review
 
-Every review has the same sections:
+Every full review has these sections (the glb-coder note and the LFM3 family overview are shorter):
 
 1. **Summary**: what the model is, in two lines.
 2. **The model in one picture**: its skeleton.

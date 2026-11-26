@@ -55,7 +55,7 @@
 | **Entry** | 0–1 | conv mixer is strongest here (conv RMS highest at L0); MLP gain high at L1 | turn raw tokens into local word/phrase features |
 | **Early mix** | 2–7 | first global attention at L2; post-norms still small | first look across the whole context |
 | **Core** | 8–17 | flattest stretch; MLP gain lowest at L9 (0.079) | steady meaning-building; best place for edits |
-| **Dead-ish attention** | 18 | q/k norm only 0.061/0.065 vs ~1.0+ elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
+| **Dead-ish attention** | 18 | q/k norm only 0.061/0.065 vs 0.81–1.16 elsewhere | small q/k gains shrink the attention logits, so L18 likely attends almost uniformly (not checked on activations); its MLP weights look normal |
 | **Exit** | 19–23 | post-norms climb to their max; top-4 MLP pre-norm gains of the whole model (not only this zone) are L2, L1, L22, L4 | likely: commit to the answer and shape the next token |
 
 Other measured patterns:
@@ -73,6 +73,8 @@ Mean relative change of every norm gain per block (0 = identical):
 | drift | 0.27 | 0.23 | 0.20 | 0.30 | 0.21 | 0.27 | 0.27 | 0.22 | 0.26 | 0.23 | 0.31 | 0.27 | 0.29 | 0.27 | 0.31 | 0.27 | 0.29 | 0.27 | 0.31 | 0.25 | 0.28 | 0.20 | 0.28 | 0.18 |
 
 Average **0.261**. Most changed: L10, L14, L18. Least changed: L23, L2, L21.
+
+> **Re-run note (Nov 2026):** `tools/drift.py` on the Ollama LFM3-1.7B vs LFM3-VL weights did not reproduce 0.261 (or the 0.265 quoted below). It gives a mean relative Frobenius change of 0.44, and a mean 1 − cosine of 0.106 (median 0.114). The table above used an unrecorded metric, so treat its absolute values as unverified; the per-layer ranking is the useful part. Raw output: [results/drift_lfm3_vl.json](../results/drift_lfm3_vl.json).
 
 ### Every LLM layer
 
@@ -148,12 +150,12 @@ Measured highlights:
 ## 5. What's strong
 
 1. **Lightweight vision tower** (189M with adapter, Q8_0 for precision).
-2. **Same image encoder as d1:** what one learns about images, the other shares.
+2. **Near-identical image encoder to d1's:** what one learns about images, the other shares.
 3. **Drift is even across all blocks** (0.18–0.31): a full, balanced re-train for image grounding.
 
 ## 6. Weak spots
 
-1. **Furthest LLM from the base** (drift 0.265) and from Audio (0.300): text-only behaviour differs most.
+1. **Furthest LLM from the base** (drift 0.265 in the original run; not reproduced, see the re-run note above) and from Audio (0.300): text-only behaviour differs most.
 2. **Smaller vision weights** than Omni's encoder; adapter input norm 0.45 means it damps image features more.
 3. **L18 attention weakest of all** (q/k ≈0.06).
 
@@ -166,8 +168,8 @@ Measured highlights:
 | Fact / habit edit (ROME-style) | **MLP of L8–17** | flattest, lowest-gain core; edits stay contained |
 | Steering vector | **residual after L10–16** | middle of the stack, before the exit zone amplifies |
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
-| Revive / prune | **L18 attention** | near-flat attention; candidate to prune or to re-train with a small LoRA |
-| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
+| Revive / prune | **L18 attention** | near-uniform attention (small q/k gains) still writes a context average through v/o; test skipping it with `tools/ablate_ppl.py` before pruning or re-training |
+| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest post-norm gains (L21 and L23 are among the blocks that drifted least from the base here) |
 | Projector | **adapter (`mm.*`) only** | the encoders closely match sibling models; tune the adapter, not the tower |
 
 ---

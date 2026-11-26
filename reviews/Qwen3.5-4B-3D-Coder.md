@@ -10,13 +10,15 @@
 
 ## 1. Summary
 
-This is a 3D / Three.js coding fine-tune of [Qwen3.5-4B](Qwen3.5-4B.md). The skeleton is the same: 32 layers, hybrid Gated DeltaNet + full attention, tied embeddings, one MTP layer. So this review skips what the base review already covers and goes deeper on the MLPs: **where each layer writes, and which layers work together.**
+This is a 3D / Three.js coding fine-tune of [Qwen3.5-4B](Qwen3.5-4B.md).
+
+> **Note:** the [glb-coder comparison](Qwen3.5-4B-GLB-3D-Coder.md) found this model's norm gains within 0.01% and weight RMS within 0.11% of the base. Those metrics can miss a merged LoRA (see that note), so this is likely but not proven. So the findings below most likely describe base Qwen3.5-4B, not something the fine-tune added. Repeating the vocabulary readout on the base would confirm it. The skeleton is the same: 32 layers, hybrid Gated DeltaNet + full attention, tied embeddings, one MTP layer. So this review skips what the base review already covers and goes deeper on the MLPs: **where each layer writes, and which layers work together.**
 
 Three findings stand out:
 
 1. **One shared direction dominates every MLP.** It sits 98.5% on hidden dim 0. It is a weight outlier channel (the base Qwen3.5-4B shows the same dim-0 outlier in every `ffn_down`), not a behaviour. Any "top singular vector" edit will hit it first. Remove it before looking for anything else.
 2. **After removing it, the middle layers L13–L17 write the strongest layer-specific directions**, and they come in linked pairs (L13–14, L15–16, L16–17).
-3. **Two late layers can be read through the vocabulary.** L27 is a digit feature ("8"). L31 shapes code statement endings (`;`, `};`, `]`).
+3. **Two late layers have candidate readouts through the vocabulary.** L27 looks like a digit feature ("8"). L31 looks like it shapes code statement endings (`;`, `};`, `]`). Direct unembedding readouts are unreliable for intermediate layers (tuned lens, arXiv:2303.08112), so treat both as candidates until ablated.
 
 ---
 
@@ -52,9 +54,9 @@ tokens ─► embed (tied) ─► L0-2 entry ─► L3-19 middle ─► L20-31 d
 
 | Zone | Layers | Evidence |
 |---|---|---|
-| Entry | 0–2 | DeltaNet decay `A` is 7–13: very short memory |
+| Entry | 0–2 | DeltaNet \|A\| is 7–13 (memory length also depends on dt bias; see the base review) |
 | Middle | 3–19 | strongest layer-specific MLP writers (L13–17); vocabulary readout is noise |
-| Deep | 20–31 | `post_attention_layernorm` jumps 0.10 → 0.15 at L20 and climbs to 0.42 by L29; `A` drops to 0.2–0.47 (long memory) |
+| Deep | 20–31 | `post_attention_layernorm` jumps 0.10 → 0.15 at L20 and climbs to 0.42 by L29; \|A\| drops to 0.2–0.47 (not by itself long memory; dt bias rises here) |
 | MTP | 32 | draft head, not on the main path |
 
 ### The shared dim-0 direction
@@ -83,7 +85,7 @@ tokens ─► embed (tied) ─► L0-2 entry ─► L3-19 middle ─► L20-31 d
 
 ### Linked layers
 
-Pairs whose top two layer-specific directions overlap (\|cos\| > 0.4):
+Pairs whose top two layer-specific directions overlap (\|cos\| ≥ 0.4):
 
 | Pair | \|cos\| |
 |---|---|
@@ -111,7 +113,7 @@ L15 → L16 → L17 act as a chain. An edit should cover the pair, not one layer
 
 - A clean, balanced MLP stack: no overloaded neurons anywhere.
 - A clear middle zone with strong, structured writers (L13–17).
-- A readable output stage: L31 carries a code-specific feature, which fits a coding fine-tune.
+- A readable output stage: L31 carries a code-ending feature. Since the weights barely differ from the base, this is likely inherited from Qwen3.5-4B rather than added by the fine-tune.
 
 ## 5. Weak spots
 
@@ -125,13 +127,13 @@ L15 → L16 → L17 act as a chain. An edit should cover the pair, not one layer
 
 | Goal | Best place | Why |
 |---|---|---|
-| Remove a failure direction (loops, truncation, broken code) | `layers.15.mlp.down_proj` + `layers.16.mlp.down_proj` | strongest middle writer and its linked partner; same slot as the 0.8B blog edit at L15 |
-| Second target | `layers.19.mlp.down_proj` | most one-directional middle layer, last full attention before the deep zone; matches the blog's L19 |
+| Remove a failure direction (loops, truncation, broken code) | `layers.15.mlp.down_proj` + `layers.16.mlp.down_proj` | strongest middle writer and its linked partner; same slot as an earlier 0.8B edit at L15 reported in a blog post (source not recorded here) |
+| Second target | `layers.19.mlp.down_proj` | most one-directional middle layer, last full attention before the deep zone; matches that blog post's L19 (source not recorded) |
 | Only if probing peaks there | L17, L13–14 `down_proj` | linked writers |
 | Steering vector | residual after L19 | zone boundary |
 | **Leave alone** | L0–2, `A_log` / `dt_bias` / `conv1d`, every norm, embeddings (tied), MTP, vision tower, **hidden dim 0**, **L27**, **L31** | global breakage or output-shaping features |
 
-Recommended edit size: top 64 neurons per target layer, `W[:,j] -= α·d(dᵀW[:,j])` with α = 0.5–1.0. Three layers ≈ 0.49M weights (0.012% of the model). Project dim 0 and the shared direction out of `d` first.
+Recommended edit size: top 64 neurons per target layer, `W[:,j] -= α·d(dᵀW[:,j])` with α = 0.5–1.0. Three layers ≈ 0.49M weights (0.011% of the 4.33B LLM). Project dim 0 and the shared direction out of `d` first.
 
 ---
 
@@ -172,4 +174,4 @@ What it shows:
 - **A length limit alone caused a new bug.** In 9 answers the model wrote the page as escaped HTML with no code block. Asking for one raw ```` ```html ```` block removed it completely.
 - **What's left is small.** The only loops (lod, fireworks) happen after hitting the cap. Answers are 43% shorter. The cost is slightly weaker requirement-following than the compact prompt (0.80 vs 0.83), still above the baseline.
 
-**Updated verdict:** for this fine-tune, the prompt is the right fix. It took the model from 30 to 43 good out of 50 without touching a weight. The weight map in section 6 stays valid, but nothing in these results points to a specific layer to edit, so no surgery was done. This matches the research: prompt and harness optimisation beats weight edits for skill-level behaviour.
+**Updated verdict:** for this fine-tune, the prompt is the right fix. It took the model from 30 to 43 good out of 50 without touching a weight. The weight map in section 6 stays valid, but nothing in these results points to a specific layer to edit, so no surgery was done. This is consistent with the view that prompt and harness changes should be tried before weight edits; it is one test on one model, not a general result.

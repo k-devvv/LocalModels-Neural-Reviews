@@ -10,7 +10,7 @@
 
 ## 1. Summary
 
-The **all-senses decision model**: d1-style non-causal judging with a vision encoder close to LFM3-Omni's (~6% relative difference, within Q4/Q8 quantization noise) and an audio encoder of the same design as LFM3-Audio/Omni. Decision temperature **3.383** (softer than d1's 1.337). Context 128k. Stored at **Q8_0** (8-bit, near lossless).
+The **all-senses decision model**: d1-style non-causal judging with a vision encoder close to LFM3-Omni's (~6% relative difference, likely mostly Q4/Q8 quantization noise) and an audio encoder of the same design as LFM3-Audio/Omni. Decision temperature **3.383** (softer than d1's 1.337). Context 128k. Stored at **Q8_0** (8-bit, near lossless).
 
 ---
 
@@ -196,9 +196,9 @@ Measured highlights:
 | Fact / habit edit (ROME-style) | **MLP of L8–17** | flattest, lowest-gain core; edits stay contained |
 | Steering vector | **residual after L10–16** | middle of the stack, before the exit zone amplifies |
 | LoRA | **attention q/v/o of L2–16 + MLP L8–17** | attention blocks are few (11), so this is cheap |
-| Revive / prune | **L18 attention** | near-flat attention; candidate to prune or to re-train with a small LoRA |
-| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest gains and drift |
-| Projector | **adapter (`mm.*`) only** | the encoders closely match sibling models; tune the adapter, not the tower |
+| Revive / prune | **L18 attention** | near-uniform attention (small q/k gains) still writes a context average through v/o; test skipping it with `tools/ablate_ppl.py` before pruning or re-training |
+| Leave alone | **L0–1 and L21–23** | entry builds token features; exit has the highest post-norm gains (L23 drifted most; L16, L20, L22 least) |
+| Projector | **adapter (`mm.*`) only** | the vision encoder closely matches siblings; the audio encoder shares only its design; tune the adapter, not the tower |
 
 ---
 

@@ -146,7 +146,7 @@ Observations:
 ## 5. Weak spots
 
 1. **Large on disk.** 7.5B params means a bigger file than a true 4B model; PLE must still sit in RAM or VRAM.
-2. **Extreme gains in layers 2–8** (up to 65) likely make the early stack fragile under heavy quantization or edits.
+2. **Extreme pre-norm gains in layers 2–8** (up to 65). Gemma 4 stores these unshifted, so they are real. But every mixer and MLP is followed by a post-norm and `layer_output_scale`, which set how much a layer writes; the pre-norm gain mostly shapes the input to the nonlinearity. Whether these layers are fragile is untested.
 3. **Only 7 global layers**; long-range recall likely rests on them.
 4. **Needs a recent runtime** that supports `gemma4`, PLE and KV sharing.
 
@@ -169,4 +169,4 @@ Observations:
 
 ## 7. Verdict
 
-The most unusual design in this collection. Gemma 4 E4B hides a 2.8B lookup table behind a 4B compute core, shares memory across its top 18 layers and runs with extreme internal gains. It should be efficient at run time (not timed here), but it is large on disk and likely touchy to edit. The KV-shared top half and the layer-23 hinge are the two facts any fine-tune must respect.
+One of the most unusual designs in this collection. Gemma 4 E4B hides a 2.8B lookup table behind a 4B compute core, shares memory across its top 18 layers and runs with extreme internal gains. It should be efficient at run time (not timed here), but it is large on disk and likely touchy to edit. The KV-shared top 18 layers and the layer-23 hinge are the two facts any fine-tune must respect.
