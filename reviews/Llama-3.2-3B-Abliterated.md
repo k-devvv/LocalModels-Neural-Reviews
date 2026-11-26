@@ -6,6 +6,18 @@
 
 ---
 
+> **Abliteration check (re-run 2026-11-26).** The model was compared with its base: `dolphinlabs/llama3.2-3b-uncensored` (`Q8_0`, blob `cc23113…`) against `llama3.2:3b` (`Q4_K_M`, blob `dde5aa3…`).
+>
+> - **Drift.** There were 255 matched tensors, with a mean relative Frobenius drift of 0.050 and a maximum of about 0.078. The norm tensors show no drift.
+> - **Low-rank test.** The deltas in `attn_output` and `ffn_down` for layers 9–24 have rank-1 structure above the quant-noise floor. That floor comes from the `attn_q` control, where s1/s2 is about 1.0 and the top direction holds about 0.2% of the energy. In the tested layers, s1/s2 is 2.7–4.9 and the top direction holds 4–6% of the energy. The peak is `blk.24.ffn_down`, with s1/s2 of 14.5 and 35% of the energy.
+> - **Shared direction.** The top directions are only partly shared across layers (mean |cos| 0.30). `abliteration_check` gives a weak eigengap of 1.24.
+>
+> **Verdict:** this is likely abliteration-style directional editing of output projections in the mid and late layers. It is not conclusive, because there is no single clean global refusal direction and the quant mismatch adds noise.
+>
+> An earlier `abliteration_check` result was mistakenly run on a Qwen3.5-4B blob and has been replaced. Data: `results/drift_llama32_abliteration.json`, `results/abliteration_rank1_llama32.json`, `results/abliteration_llama32_3b.json`. Activation probes remain blocked because no matching HF checkpoint is available.
+
+---
+
 ## 1. Summary
 
 This is Meta's Llama-3.2-3B-Instruct with **abliteration** applied: a refusal direction was found in the residual stream and projected out of the weights, so the model refuses less. The architecture is untouched: a plain 28-layer dense transformer with grouped-query attention and a SwiGLU MLP.
