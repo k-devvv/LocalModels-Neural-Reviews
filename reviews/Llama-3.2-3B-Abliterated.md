@@ -12,7 +12,7 @@ This is Meta's Llama-3.2-3B-Instruct with **abliteration** applied: a refusal di
 
 The whole file is **Q8_0**, so the numbers below are close to the original bf16 weights. The layer profile is the classic Llama shape: very quiet first layers, gains that climb steadily with depth, and a small drop in the last two layers.
 
-> **What this review cannot show.** Abliteration changes the weights by a tiny rank-1 edit. Without the original Instruct weights to compare against, its size and location cannot be measured here. Everything below describes the model as it is, not what was removed.
+> **What this review cannot show.** Abliteration changes the weights by a tiny rank-1 edit. It was not measured here. It can be, from this file alone: abliteration orthogonalises every matrix that writes to the residual stream against one direction (arXiv:2406.11717), so that direction shows up as a shared near-null direction of the embedding, `attn_output` and `ffn_down` weights. `tools/abliteration_check.py` finds it; diffing against the original Instruct weights with `tools/drift.py` would confirm it. Everything below describes the model as it is, not what was removed.
 
 ---
 
@@ -133,7 +133,7 @@ Nowhere special: every matrix is Q8_0 and the norms are F32. At 8 bits the quant
 |---|---|---|
 | Style / tone LoRA | attention + MLP, layers 18–27 | The highest gains: small changes show up strongly. |
 | Restore some refusals | residual stream around layers 10–16 | Published abliteration work usually finds refusal directions in middle layers (not measured here); 10–16 is a starting guess. |
-| Steering vectors | residual stream, layers 8–20 | Gains are stable here, so added vectors are not drowned out. |
+| Steering vectors | residual stream, layers 8–20 (sweep range) | Whether an added vector is "drowned out" depends on the residual-stream norm, not the norm gain; ActAdd tunes both layer and coefficient (arXiv:2308.10248). Measure \|\|h_l\|\| with `tools/act_probe.py`. |
 | Domain knowledge LoRA | MLP, layers 6–22 | MLP layers are commonly believed to store most facts (interpretation, not measured). |
 | Leave alone | layers 0–1, output_norm, embedding | The entry layers and the tied head/embedding matrix affect every token. |
 

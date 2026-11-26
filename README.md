@@ -53,11 +53,14 @@ Every review follows the same steps, using only the model file.
 
 | Tensor type | Number | Why it matters |
 |---|---|---|
-| **Norm vectors** (attention / MLP norm) | mean \|gain\| | How loudly the model lets that layer speak. A gain near 0 means the layer is nearly switched off. |
-| **Weight matrices** (q, k, v, o, gate, up, down) | RMS of the first 256 rows | How big the weights are. It also shows where quantization spent its bits. |
+| **Norm vectors** (attention / MLP norm) | mean \|gain\| | How strongly a norm scales its input. In plain pre-norm models a small gain also shrinks what the layer reads. Caveats: for Qwen3.5 and Gemma 1–3 GGUFs the stored value is 1 + w, so "near 0" means nothing; in models with post-norms or q/k norms (LFM3, Gemma 4, Qwen3.5 full attention) the pre-norm gain's overall scale is largely cancelled downstream, so it is not a measure of how loudly the layer writes. |
+| **Weight matrices** (q, k, v, o, gate, up, down) | RMS of the first 256 rows (current tables); full matrix and per head in `tools/layer_stats.py` | How big the weights are. Caveat: rows are output channels, so 256 rows can cover only 1–2 KV heads, only the Q part of a fused qkv, and (for `ffn_down`) an outlier dim like Qwen3.5's dim 0. Q4_K alone changes RMS by about 0.5%, so smaller differences are noise. Quant types per tensor follow llama.cpp's fixed rules, not model sensitivity. |
 | **Learned scales** (Dory: `residual_alpha`, gate scales) | value | These replace norms in norm-free models. |
 | **LoRA adapters** | ‖ΔW‖ for ΔW = B·A·(α/r), and effective rank | How much each module changed, and in how many directions. |
-| **Related models** | drift = mean relative change of norm gains | 0 means the same LLM. Shows which fine-tune came from which. |
+| **Related models** | drift = mean relative change of norm gains (current tables); per-tensor ‖ΔW‖/‖W‖ in `tools/drift.py` | 0 means identical norms. It shows similarity, not direction, and LoRA-merged fine-tunes barely change norms, so a small drift does not prove two LLMs are the same. |
+
+> [!NOTE]
+> The scripts are now in [`tools/`](tools/README.md). The tables in the reviews were made with the earlier first-256-rows method and will be regenerated with them.
 
 > [!NOTE]
 > All numbers are **measured from the weights**. Zone labels like "reading" or "decision" are **informed interpretation** of those numbers. They were not proven by activation probing. Treat them as a map, not ground truth.

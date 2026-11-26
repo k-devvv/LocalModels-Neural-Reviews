@@ -160,7 +160,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 
 ### Where the compression spent its bits
 
-- Linear-attention `qkv` in every layer: **Q6_K**. The quantizer protected the recurrent memory inputs.
+- Linear-attention `qkv` in every layer: **Q6_K**. Which tensors get more bits is set by llama.cpp's fixed Q4_K_M type rules, not learned from this model; the imatrix only shapes values within each type.
 - `ffn_down`: 16 layers Q6_K, 16 layers Q4_K. `ssm_out`: half Q8_0.
 - Full-attention q/v: Q6_K at layers 3, 15, 27, 31; Q4_K elsewhere.
 - The MTP block is all **Q8_0**.
@@ -174,7 +174,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 2. **Orderly decay plan.** Decay values fall steadily from early to deep layers.
 3. **Built-in speed-up.** The MTP block allows speculative decoding without a separate draft model.
 4. **Vision included** with a full-precision encoder.
-5. **Careful quant.** The sensitive parts (linear qkv, MTP, embedding) got 6–8 bits.
+5. **Higher-precision quant for some parts.** Linear qkv, MTP and embedding are at 6–8 bits (by llama.cpp's type rules, not a per-model choice).
 
 ## 5. Weak spots
 
@@ -189,7 +189,7 @@ A 24-layer ViT, width 1,024, patch 16, 768-px input, 2×2 spatial merge, then a 
 
 | Goal | Best place | Why |
 |---|---|---|
-| Fact edit (ROME-style) | MLP of layers 8–18 | Calm middle, gain ≈1, where stored associations usually sit. |
+| Fact edit (ROME-style) | MLP of layers 8–18 (start of a sweep) | ROME picks its layer by causal tracing on activations (arXiv:2202.05262), and tracing peaks do not reliably predict the best edit layer (arXiv:2301.04213). Sweep layers and score edit success. |
 | Steering vector | Residual after layer 19 | Last calm layer before the loud deep zone; q/k peak shows it's a focus point. |
 | Long-context behaviour | Full-attention layers 23, 27, 31 | They do the exact lookups the linear layers can't. |
 | LoRA for style / format | Linear `attn_qkv` + `ssm_out` in 20–31 | Deep zone shapes the output; memory is long there. |

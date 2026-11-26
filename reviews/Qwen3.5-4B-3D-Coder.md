@@ -12,13 +12,13 @@
 
 This is a 3D / Three.js coding fine-tune of [Qwen3.5-4B](Qwen3.5-4B.md).
 
-> **Note:** the [glb-coder comparison](Qwen3.5-4B-GLB-3D-Coder.md) found this model's weights within about 0.1% of the base (norm and weight-RMS drift). So the findings below most likely describe base Qwen3.5-4B, not something the fine-tune added. Repeating the vocabulary readout on the base would confirm it. The skeleton is the same: 32 layers, hybrid Gated DeltaNet + full attention, tied embeddings, one MTP layer. So this review skips what the base review already covers and goes deeper on the MLPs: **where each layer writes, and which layers work together.**
+> **Note:** the [glb-coder comparison](Qwen3.5-4B-GLB-3D-Coder.md) found this model's norm gains within 0.01% and weight RMS within 0.11% of the base. Those metrics can miss a merged LoRA (see that note), so this is likely but not proven. So the findings below most likely describe base Qwen3.5-4B, not something the fine-tune added. Repeating the vocabulary readout on the base would confirm it. The skeleton is the same: 32 layers, hybrid Gated DeltaNet + full attention, tied embeddings, one MTP layer. So this review skips what the base review already covers and goes deeper on the MLPs: **where each layer writes, and which layers work together.**
 
 Three findings stand out:
 
 1. **One shared direction dominates every MLP.** It sits 98.5% on hidden dim 0. It is a weight outlier channel (the base Qwen3.5-4B shows the same dim-0 outlier in every `ffn_down`), not a behaviour. Any "top singular vector" edit will hit it first. Remove it before looking for anything else.
 2. **After removing it, the middle layers L13–L17 write the strongest layer-specific directions**, and they come in linked pairs (L13–14, L15–16, L16–17).
-3. **Two late layers can be read through the vocabulary.** L27 is a digit feature ("8"). L31 shapes code statement endings (`;`, `};`, `]`).
+3. **Two late layers have candidate readouts through the vocabulary.** L27 looks like a digit feature ("8"). L31 looks like it shapes code statement endings (`;`, `};`, `]`). Direct unembedding readouts are unreliable for intermediate layers (tuned lens, arXiv:2303.08112), so treat both as candidates until ablated.
 
 ---
 

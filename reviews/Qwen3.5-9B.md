@@ -125,7 +125,7 @@ Gains are the mean absolute value of each norm. Matrices are the RMS of the firs
 | Q8_0 | 6M | ssm_alpha, ssm_beta (tiny, kept precise) |
 | F32 | small | conv1d, norms, ssm_a, dt bias |
 
-The quantizer protected the recurrent memory path (qkv and ssm_out at Q5_K, alpha and beta at Q8_0) and gave the first and last few ffn_down layers more bits. This follows the usual "edges matter most" rule.
+The recurrent path (qkv and ssm_out at Q5_K, alpha and beta at Q8_0) and the first and last few ffn_down layers got more bits. This is llama.cpp's fixed Q4_K_M type rule (`use_more_bits` in `src/llama-quant.cpp`), applied by position, not a measurement of which parts are sensitive.
 
 ---
 

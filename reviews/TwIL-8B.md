@@ -134,7 +134,7 @@ The **MLP weights stay very even everywhere**: down-projection RMS is 0.0030–0
 - **Middle layers:** every third layer gets 6-bit, the rest are 4-bit.
 - **Output head:** 6-bit.
 
-The quantizer protected the entry and the decision zone. That fits the high late gains above, though sensitivity was not measured directly.
+This first/last-eighth plus every-third-layer pattern is llama.cpp's fixed Q4_K_M rule (`use_more_bits` in `src/llama-quant.cpp`). It is applied by layer position, so it says nothing about which layers are sensitive. The imatrix changes values inside each type, not which type a tensor gets.
 
 ---
 
@@ -144,7 +144,7 @@ The quantizer protected the entry and the decision zone. That fits the high late
 2. **Reasoning mode.** It thinks in `<think>` before answering, which helps with multi-step bugs.
 3. **Fits small hardware.** It runs on a 6 GB RTX 4050 at 16k context. The 8 shared key/value groups keep memory use about 4× smaller than full attention would.
 4. **Long-context design.** 128k native context with a large RoPE base. It can read big files in principle, but VRAM is the limit.
-5. **Smart compression.** It was calibrated on its own domain data, and extra precision goes to the first and last layers.
+5. **Domain-calibrated compression.** The imatrix was built on its own domain data. The extra precision for the first and last layers is llama.cpp's standard Q4_K_M rule.
 6. **Clean, standard design.** It loads in llama.cpp, Ollama and LM Studio. That makes it easy to analyse, edit, or LoRA-tune.
 7. **Large vocabulary (100k).** Code, symbols and many languages fit into fewer tokens, so it reads more per token.
 
@@ -153,7 +153,7 @@ The quantizer protected the entry and the decision zone. That fits the high late
 1. **Thinking uses a lot of tokens.** On long prompts it can run out of budget before it writes the answer. Our SWE test had to give it a large thinking budget.
 2. **4-bit is a loss.** The Q4 file is slightly less precise than the original weights. It also can't be trained directly, because training needs BF16 weights.
 3. **Speed on 6 GB.** 16k context is about the comfortable limit. The full 128k won't fit on this GPU.
-4. **The decision layers (34–39) are likely fragile.** Their MLP gains are about 1.5–3× the core's (1.97–3.99 vs ~1.3). A small change there is likely amplified.
+4. **The decision layers (34–39) may be sensitive (untested).** Their MLP pre-norm gains are about 1.5–3× the core's (1.97–3.99 vs ~1.3). But pre-norm gains rise with depth in most pre-norm models to keep up with the growing residual stream, and layer-pruning work finds deep layers among the *most* removable (arXiv:2403.17887). Check with `tools/ablate_ppl.py` before treating them as fragile.
 
 ---
 
@@ -161,10 +161,10 @@ The quantizer protected the entry and the decision zone. That fits the high late
 
 | Goal | Best place | Why |
 |---|---|---|
-| Edit a fact or API habit (ROME/MEMIT) | **MLP of layers 12–24** | Steady middle zone. Facts are commonly found in middle MLPs in similar models; not probed here. |
+| Edit a fact or API habit (ROME/MEMIT) | **MLP of layers 12–24 (start of a sweep)** | Facts are often traced to middle MLPs (arXiv:2202.05262), but tracing does not reliably pick the best edit layer (arXiv:2301.04213). Sweep layers and score edit success. |
 | Push a behaviour, e.g. "write shorter thinking" (steering vector) | **Layers 14–22** | Middle layers usually carry style and intent in similar models; not tested here. |
 | Small targeted LoRA for coding | **attn q/v + MLP in layers 10–30** | Likely where most of the work happens. The cost is about 0.1–0.5% of parameters. |
-| Leave alone | **Layer 0–2 and 34–39** | Entry layers hold basic token meaning. Decision layers have high gains, so edits there are amplified and break output easily. |
+| Leave alone (until tested) | **Layer 0–2 and the final layer** | Entry layers build token features. Layer-skip tests (arXiv:2403.17887) usually find the final layer essential and earlier deep layers removable, so 34–38 are an open question for `tools/ablate_ppl.py`. |
 
 To find **which of the 12,800 neurons in one layer** handle coding, the next step is activation probing:
 1. Run coding prompts through the model.

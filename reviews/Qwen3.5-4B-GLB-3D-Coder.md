@@ -25,7 +25,7 @@ The quant layout differs from the base. glb-coder and 3D-Coder share one layout 
 ## What it means
 
 - **glb-coder is likely a light fine-tune.** It moved about 10× more than 3D-Coder did, but the change is still around 1% of weight size. Drift does not measure skill, so whether the base skills are intact is a guess, not a test result.
-- **3D-Coder is effectively the base.** At 0.11% RMS drift, which is close to requantization noise, its weights are nearly identical to Qwen3.5-4B.
+- **3D-Coder is probably very close to the base, but this metric can't prove it.** "Weight-RMS drift" compares one RMS number per matrix, so two different matrices with the same RMS score 0, and Q4_K requantization alone moves RMS by about 0.5%. Norm-gain drift (0.01%) is stronger evidence, but a merged LoRA leaves norms untouched. `tools/drift.py` measures the actual weight difference ‖ΔW‖/‖W‖; run it against a Q8_0 base to settle this.
 - **Part of glb-coder's specialty is in its Modelfile.** It asks for one self-contained Three.js HTML file (importmap, OrbitControls, an Export GLB button via GLTFExporter). It sets num_ctx 16384, num_predict 12000 and temperature 0.6. The rest is in the weights, which moved 10× more than 3D-Coder's.
 
 ## Verdict
