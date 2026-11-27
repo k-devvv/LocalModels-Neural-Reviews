@@ -139,6 +139,11 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | 🟥 | **Qwen3.5-9B** | Qwen3.5 hybrid linear+full attention, untied head | 8.95B | Q4_K_M | [read →](reviews/Qwen3.5-9B.md) |
 | 🟥 | **glb-coder** | Qwen3.5-4B fine-tune for Three.js / GLB export | 4.2B | Q4_K_M | [read →](reviews/Qwen3.5-4B-GLB-3D-Coder.md) |
 | 🟦 | **Llama-3.2-3B Abliterated** | Meta Llama 3.2, dense, 28 layers, refusal removed | 3.21B | Q8_0 | [read →](reviews/Llama-3.2-3B-Abliterated.md) |
+| ⬜ | **Aion-1.0-Instruct 2.3B** | aion arch, 28 blocks, 2048-wide, AD vs Uncensored-AD | 2.3B | Q4_K_M | [read →](reviews/Aion-1.0-Instruct-2.3B.md) |
+| ⬜ | **Raon-1-nano** | raon1nano, 24 blocks, 1536-wide, hyper-connection tensors, base vs abliterated | nano | Q4_K_M | [read →](reviews/Raon-1-nano.md) |
+| ⬜ | **Nanbeige4.2-3B** | nanbeige, 22 blocks, 3072-wide, base vs heretic | 3B | Q4_K_M | [read →](reviews/Nanbeige4.2-3B.md) |
+| ⬜ | **Spark-X2.6-4B** | spark2_5, 36 blocks, 2560-wide, gated attention, base vs abliterated | 4B | Q4_K_M | [read →](reviews/Spark-X2.6-4B.md) |
+| ⬜ | **OrbitLM-1.8B-Thinking** | OuroForCausalLM, 24 layers, sandwich norms and early-exit gate | 1.8B | safetensors | [read →](reviews/OrbitLM-1.8B-Thinking.md) |
 
 > [!NOTE]
 > Phi-4-mini, Gemma 4 E4B and the Coding QLoRA adapter are no longer installed on the test machine. Their reviews are kept for reference.
