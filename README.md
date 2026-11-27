@@ -6,7 +6,7 @@
 
 *No benchmarks, no vibes. Each review opens the model file and measures every layer.*
 
-![models](https://img.shields.io/badge/models_reviewed-16-2f6fde)
+![models](https://img.shields.io/badge/models_reviewed-21-2f6fde)
 ![layers](https://img.shields.io/badge/stacks-LLM%20·%20vision%20·%20audio-1a9e8f)
 ![gpu](https://img.shields.io/badge/GPU-RTX_4050_6GB-e8590c)
 ![method](https://img.shields.io/badge/method-weight_statistics-8250df)
@@ -31,6 +31,9 @@
 Every reviewed model on one page: one cell per layer, coloured by block type, with surgery targets and notable layers marked.
 
 ![All models at a glance](assets/all-models-overview.svg)
+
+> [!NOTE]
+> The five small Hugging Face models added on 26 Nov (Aion, Raon, Nanbeige, Spark, OrbitLM) are compared with their uncensored / abliterated siblings where one exists. **OrbitLM** has no sibling, so its row is structure only (no abliteration or drift numbers). **Nanbeige** base and heretic use different quant layouts, so part of the 0.048 drift is requantization, not editing (0.031 on same-quant tensors). **Spark** has the largest drift in the repo (mean 0.16), but 73 of 290 tensors also changed quant type, so it reads as a re-export rather than a clean refusal edit.
 
 ---
 
@@ -116,6 +119,11 @@ In each diagram one bar is one layer, the bar height is the measured value, and 
 | **Qwen3.5-9B** | Same hybrid plan as the 4B at width 4096: linear-attention \|A\| falls from 6–13 (layers 1–2) to 0.16–0.44 (20–31), but with dt bias the slowest decay is mid-stack (16–20); post-attention gain peaks at 1.33 on layer 29. No MTP block in this GGUF. |
 | **Llama-3.2-3B Abliterated** | Dense 28-layer Llama at Q8_0. Diffed against base `llama3.2:3b`: mean weight drift 0.05, with rank-1 edits in `attn_output` and `ffn_down` of layers 9–24 (peak L24). Likely abliteration-style editing; not conclusive ([results](results/drift_llama32_abliteration.json)). |
 | **glb-coder** | Likely a light fine-tune of Qwen3.5-4B: ~1.2–1.3% weight-RMS drift vs ~0.1% for 3D-Coder. A per-tensor ‖ΔW‖ check has not been run. |
+| **Aion-1.0-Instruct 2.3B** | Uncensored-AD leaves blocks 0–8 identical and edits 9–27 lightly (mean drift 0.005, peak blk 11). Weak eigengap, so self-abliteration at blocks 9–13 may be uneven. |
+| **Raon-1-nano** | Loud values live in the small `hc_*` hyper-connection tensors, not attention or MLP. Abliterated build is a light edit of blocks 13–18 (drift 0.005), not classic abliteration. |
+| **Nanbeige4.2-3B** | Attention norm gain more than triples with depth; block 21 is loudest. Heretic drift 0.048 is spread over every block (peak 18), partly from a different quant layout. |
+| **Spark-X2.6-4B** | Largest drift of any pair (mean 0.16), but 73/290 tensors changed quant type and the refusal-like direction (attn_output, blocks 10–15) barely moved. |
+| **OrbitLM-1.8B-Thinking** | Structure only. Sandwich norms and an early-exit gate around a full-attention stack; second norm gains double at layer 23. Cleanest weights in the batch (max row outlier 14×). |
 
 ---
 
