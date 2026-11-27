@@ -1,0 +1,4113 @@
+{
+ "a": "D:\\models\\new\\gguf\\raon-1-nano-Q4_K_M.gguf",
+ "b": "D:\\models\\new\\uncensored\\Raon-1-nano-Abliterated-Q4_K_M.gguf",
+ "mean_rel_fro": 0.0051734776799942615,
+ "per_block_mean_rel_fro": {
+  "blk.0": 0.0006529989309664609,
+  "blk.1": 0.0006303772927735265,
+  "blk.2": 0.0005417842765225988,
+  "blk.3": 0.0007333379576500015,
+  "blk.4": 0.0007034655962485012,
+  "blk.5": 0.0005428810108557221,
+  "blk.6": 0.0007930784751442411,
+  "blk.7": 0.0006895683088958305,
+  "blk.8": 0.0004596347687445621,
+  "blk.9": 0.0007484192040406206,
+  "blk.10": 0.0007639181632151222,
+  "blk.11": 0.0005917196283495167,
+  "blk.12": 0.011201126415312774,
+  "blk.13": 0.012211775889411403,
+  "blk.14": 0.009106111906290544,
+  "blk.15": 0.012654220638459206,
+  "blk.16": 0.013941866156087713,
+  "blk.17": 0.01275002649308474,
+  "blk.18": 0.012824070104275906,
+  "blk.19": 0.00991005907481141,
+  "blk.20": 0.010236781713617343,
+  "blk.21": 0.01202842693937284,
+  "blk.22": 0.0004899877831751171,
+  "blk.23": 0.0006482058914485944
+ },
+ "tensors": {
+  "output_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "per_layer_model_proj.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "per_layer_proj_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "per_layer_token_embd.weight": {
+   "rel_fro": 0.0030644709948679655,
+   "cos": 0.9999953045259055,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "token_embd.weight": {
+   "rel_fro": 0.0006228605879654093,
+   "cos": 0.9999998060266538,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.0.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.0.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.0.attn_qkv.weight": {
+   "rel_fro": 0.0007610153635225127,
+   "cos": 0.9999997104278782,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.0.ffn_down.weight": {
+   "rel_fro": 0.0006343921523009442,
+   "cos": 0.9999997987734147,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.0.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.0.ffn_up.weight": {
+   "rel_fro": 0.0036196531579021033,
+   "cos": 0.9999934490605916,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.0.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.0.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.0.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.0.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.0.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.0.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.0.inp_gate.weight": {
+   "rel_fro": 0.0038560377951104645,
+   "cos": 0.9999925655771438,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.0.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.0.proj.weight": {
+   "rel_fro": 0.004178511424424161,
+   "cos": 0.9999912700226568,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.0.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.0.ssm_dt.bias": {
+   "rel_fro": 4.33645522940311e-08,
+   "cos": 0.9999999999999994,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.0.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.0.ssm_f_b.weight": {
+   "rel_fro": 1.0325361516738834e-05,
+   "cos": 0.9999999999467156,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.0.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.1.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.1.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.1.attn_qkv.weight": {
+   "rel_fro": 0.0006025860072332871,
+   "cos": 0.9999998184451845,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.1.ffn_down.weight": {
+   "rel_fro": 0.0006260725268244281,
+   "cos": 0.99999980401672,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.1.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.1.ffn_up.weight": {
+   "rel_fro": 0.0034705027992879838,
+   "cos": 0.9999939778070178,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.1.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.1.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.1.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.1.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.1.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.1.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.1.inp_gate.weight": {
+   "rel_fro": 0.003908282698204203,
+   "cos": 0.9999923626393928,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.1.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.1.proj.weight": {
+   "rel_fro": 0.004000101823920627,
+   "cos": 0.9999919996182721,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.1.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.1.ssm_dt.bias": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000009,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.1.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.1.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.1.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.2.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.2.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.2.attn_qkv.weight": {
+   "rel_fro": 0.0006240230802416463,
+   "cos": 0.999999805297773,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.2.ffn_down.weight": {
+   "rel_fro": 0.0006026815702315998,
+   "cos": 0.9999998183875791,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.2.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.2.ffn_up.weight": {
+   "rel_fro": 0.003604710617401636,
+   "cos": 0.9999935030290232,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.2.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.2.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.2.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.2.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.2.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.2.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.2.inp_gate.weight": {
+   "rel_fro": 0.002645104638949222,
+   "cos": 0.9999965017048158,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.2.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.2.proj.weight": {
+   "rel_fro": 0.0033591268695380163,
+   "cos": 0.9999943581412021,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.2.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.2.ssm_dt.bias": {
+   "rel_fro": 3.875408985322444e-08,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.2.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.2.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.2.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.3.attn_gate.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.3.attn_k_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.3.attn_kv_a_mqa.weight": {
+   "rel_fro": 0.0007408885277726389,
+   "cos": 0.999999725544306,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.3.attn_kv_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.3.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.3.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.3.attn_q_a.weight": {
+   "rel_fro": 0.0006053212389824554,
+   "cos": 0.9999998167933527,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.3.attn_q_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.3.attn_q_b.weight": {
+   "rel_fro": 0.0005632680665180752,
+   "cos": 0.99999984136453,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.3.attn_v_b.weight": {
+   "rel_fro": 0.0005580969720134514,
+   "cos": 0.9999998442640339,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.3.ffn_down.weight": {
+   "rel_fro": 0.0037442242397069596,
+   "cos": 0.9999929903949017,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.3.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.3.ffn_up.weight": {
+   "rel_fro": 0.0035864703950829776,
+   "cos": 0.9999935686095894,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.3.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.3.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.3.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.3.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.3.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.3.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.3.inp_gate.weight": {
+   "rel_fro": 0.0024156967072271615,
+   "cos": 0.999997082209492,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.3.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.3.proj.weight": {
+   "rel_fro": 0.003919468920996317,
+   "cos": 0.9999923188673348,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.4.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.4.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.4.attn_qkv.weight": {
+   "rel_fro": 0.000619226281134279,
+   "cos": 0.9999998082796665,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.4.ffn_down.weight": {
+   "rel_fro": 0.0035557868067680794,
+   "cos": 0.9999936781901535,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.4.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.4.ffn_up.weight": {
+   "rel_fro": 0.0035990540555093766,
+   "cos": 0.9999935234005437,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.4.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.4.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.4.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.4.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.4.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.4.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.4.inp_gate.weight": {
+   "rel_fro": 0.003211623926135891,
+   "cos": 0.9999948427384795,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.4.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.4.proj.weight": {
+   "rel_fro": 0.0030836208554223983,
+   "cos": 0.9999952456300512,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.4.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.4.ssm_dt.bias": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000007,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.4.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.4.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.4.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.5.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.5.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.5.attn_qkv.weight": {
+   "rel_fro": 0.0005449622917531706,
+   "cos": 0.9999998515081849,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.5.ffn_down.weight": {
+   "rel_fro": 0.0006252396322895856,
+   "cos": 0.9999998045378788,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.5.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.5.ffn_up.weight": {
+   "rel_fro": 0.003551037892514182,
+   "cos": 0.9999936950602819,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.5.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.5.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.5.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.5.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.5.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.5.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.5.inp_gate.weight": {
+   "rel_fro": 0.0023957587292255727,
+   "cos": 0.9999971301746817,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.5.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.5.proj.weight": {
+   "rel_fro": 0.003740621671331931,
+   "cos": 0.9999930039324204,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.5.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.5.ssm_dt.bias": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000009,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.5.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.5.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.5.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.6.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.6.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.6.attn_qkv.weight": {
+   "rel_fro": 0.0006063758495660758,
+   "cos": 0.9999998161543245,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.6.ffn_down.weight": {
+   "rel_fro": 0.0035989956288637985,
+   "cos": 0.9999935236248051,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.6.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.6.ffn_up.weight": {
+   "rel_fro": 0.003417980407594666,
+   "cos": 0.9999941587059521,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.6.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.6.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.6.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.6.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.6.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.6.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.6.inp_gate.weight": {
+   "rel_fro": 0.003770456803718887,
+   "cos": 0.9999928918027304,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.6.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.6.proj.weight": {
+   "rel_fro": 0.004467733845882644,
+   "cos": 0.9999900197504006,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.6.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.6.ssm_dt.bias": {
+   "rel_fro": 2.696725875111553e-08,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.6.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999997,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.6.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.6.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.7.attn_gate.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999996,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.7.attn_k_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.7.attn_kv_a_mqa.weight": {
+   "rel_fro": 0.0006341908685212652,
+   "cos": 0.9999997989012597,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.7.attn_kv_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.7.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.7.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.7.attn_q_a.weight": {
+   "rel_fro": 0.0006453075177243896,
+   "cos": 0.9999997917892065,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.7.attn_q_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.7.attn_q_b.weight": {
+   "rel_fro": 0.0005912353427506809,
+   "cos": 0.9999998252203798,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.7.attn_v_b.weight": {
+   "rel_fro": 0.0006242858831448982,
+   "cos": 0.9999998051339144,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.7.ffn_down.weight": {
+   "rel_fro": 0.003524118147759863,
+   "cos": 0.9999937902979479,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.7.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.7.ffn_up.weight": {
+   "rel_fro": 0.003284999506560925,
+   "cos": 0.9999946043926884,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.7.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.7.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.7.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.7.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.7.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.7.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.7.inp_gate.weight": {
+   "rel_fro": 0.0027847515529146865,
+   "cos": 0.9999961225718834,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.7.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.7.proj.weight": {
+   "rel_fro": 0.0030816139763315603,
+   "cos": 0.9999952518163877,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.8.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.8.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.8.attn_qkv.weight": {
+   "rel_fro": 0.0006015609719332686,
+   "cos": 0.9999998190624523,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.8.ffn_down.weight": {
+   "rel_fro": 0.0006041258613778744,
+   "cos": 0.9999998175161291,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.8.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.8.ffn_up.weight": {
+   "rel_fro": 0.003426732543119228,
+   "cos": 0.9999941287498099,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.8.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.8.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.8.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.8.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.8.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999997,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.8.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.8.inp_gate.weight": {
+   "rel_fro": 0.002271329246703085,
+   "cos": 0.9999974205437858,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.8.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.8.proj.weight": {
+   "rel_fro": 0.002288904065767802,
+   "cos": 0.9999973804596134,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.8.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.8.ssm_dt.bias": {
+   "rel_fro": 4.2685989984702915e-08,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.8.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.8.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.8.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.9.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.9.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.9.attn_qkv.weight": {
+   "rel_fro": 0.0005393863769379423,
+   "cos": 0.9999998545313281,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.9.ffn_down.weight": {
+   "rel_fro": 0.003794154159648046,
+   "cos": 0.9999928021937637,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.9.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.9.ffn_up.weight": {
+   "rel_fro": 0.0032773029922900515,
+   "cos": 0.9999946296399942,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.9.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.9.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.9.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.9.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.9.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.9.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.9.inp_gate.weight": {
+   "rel_fro": 0.0036631448679044216,
+   "cos": 0.999993290718033,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.9.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.9.proj.weight": {
+   "rel_fro": 0.0036943506979369876,
+   "cos": 0.9999931758716762,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.9.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.9.ssm_dt.bias": {
+   "rel_fro": 4.498609496185451e-08,
+   "cos": 0.9999999999999996,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.9.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.9.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.9.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.10.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.10.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.10.attn_qkv.weight": {
+   "rel_fro": 0.0006028945678973086,
+   "cos": 0.9999998182591822,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.10.ffn_down.weight": {
+   "rel_fro": 0.003540913766475291,
+   "cos": 0.9999937309681766,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.10.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.10.ffn_up.weight": {
+   "rel_fro": 0.003286619914362131,
+   "cos": 0.9999945990613897,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.10.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.10.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.10.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.10.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.10.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.10.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.10.inp_gate.weight": {
+   "rel_fro": 0.004025184950092338,
+   "cos": 0.9999918989416675,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.10.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.10.proj.weight": {
+   "rel_fro": 0.0038227500654753753,
+   "cos": 0.9999926932647466,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.10.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.10.ssm_dt.bias": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000009,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.10.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.10.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.10.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.11.attn_gate.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.11.attn_k_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.11.attn_kv_a_mqa.weight": {
+   "rel_fro": 0.0005943448829410517,
+   "cos": 0.9999998233770655,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.11.attn_kv_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.11.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.11.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.11.attn_q_a.weight": {
+   "rel_fro": 0.0005885156405166768,
+   "cos": 0.9999998268247081,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.11.attn_q_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.11.attn_q_b.weight": {
+   "rel_fro": 0.0006201308248617304,
+   "cos": 0.9999998077191347,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.11.attn_v_b.weight": {
+   "rel_fro": 0.0006488734115761776,
+   "cos": 0.9999997894822481,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.11.ffn_down.weight": {
+   "rel_fro": 0.0006627118974187269,
+   "cos": 0.9999997804065929,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.11.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.11.ffn_up.weight": {
+   "rel_fro": 0.0034049141803296993,
+   "cos": 0.9999942032809532,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.11.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.11.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.11.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.11.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.11.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.11.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.11.inp_gate.weight": {
+   "rel_fro": 0.002457476528529509,
+   "cos": 0.9999969804334955,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.11.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.11.proj.weight": {
+   "rel_fro": 0.004040864457515795,
+   "cos": 0.9999918356960691,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.12.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.12.attn_output.weight": {
+   "rel_fro": 0.10720501186981896,
+   "cos": 0.9942797074912028,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.12.attn_qkv.weight": {
+   "rel_fro": 0.0006138557772366243,
+   "cos": 0.9999998115906438,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.12.ffn_down.weight": {
+   "rel_fro": 0.10646211775220965,
+   "cos": 0.9943383691970148,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.12.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.12.ffn_up.weight": {
+   "rel_fro": 0.0033972308267286332,
+   "cos": 0.9999942294053322,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.12.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.12.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.12.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.12.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.12.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.12.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.12.inp_gate.weight": {
+   "rel_fro": 0.0032242621233829847,
+   "cos": 0.9999948020736638,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.12.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.12.proj.weight": {
+   "rel_fro": 0.0031200175544356112,
+   "cos": 0.9999951327437568,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.12.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.12.ssm_dt.bias": {
+   "rel_fro": 3.2402443070389537e-08,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.12.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.12.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.12.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.13.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.13.attn_output.weight": {
+   "rel_fro": 0.12240254414749918,
+   "cos": 0.9925449962090763,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.13.attn_qkv.weight": {
+   "rel_fro": 0.0005990561432526829,
+   "cos": 0.9999998205660069,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.13.ffn_down.weight": {
+   "rel_fro": 0.11168011822448237,
+   "cos": 0.9937728438645307,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.13.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.13.ffn_up.weight": {
+   "rel_fro": 0.0033442333008464786,
+   "cos": 0.9999944080542689,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.13.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.13.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.13.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.13.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.13.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.13.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.13.inp_gate.weight": {
+   "rel_fro": 0.0032865078178351873,
+   "cos": 0.9999945994407999,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.13.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.13.proj.weight": {
+   "rel_fro": 0.002923042946896906,
+   "cos": 0.9999957279181334,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.13.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.13.ssm_dt.bias": {
+   "rel_fro": 1.5207415253456274e-08,
+   "cos": 1.000000000000001,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.13.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.13.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.13.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.14.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.14.attn_output.weight": {
+   "rel_fro": 0.09818337883485631,
+   "cos": 0.9951963431648171,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.14.attn_qkv.weight": {
+   "rel_fro": 0.0006218397312768621,
+   "cos": 0.999999806657777,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.14.ffn_down.weight": {
+   "rel_fro": 0.07418772642190538,
+   "cos": 0.997254200255416,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.14.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.14.ffn_up.weight": {
+   "rel_fro": 0.0033915913314955014,
+   "cos": 0.9999942485536966,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.14.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.14.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.14.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.14.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.14.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.14.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.14.inp_gate.weight": {
+   "rel_fro": 0.0023276445955988626,
+   "cos": 0.9999972910446431,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.14.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.14.proj.weight": {
+   "rel_fro": 0.003410030003949365,
+   "cos": 0.99999418587046,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.14.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.14.ssm_dt.bias": {
+   "rel_fro": 2.7206728603991685e-08,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.14.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.14.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.14.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.15.attn_gate.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.15.attn_k_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.15.attn_kv_a_mqa.weight": {
+   "rel_fro": 0.0005770155264897942,
+   "cos": 0.9999998335267943,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.15.attn_kv_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.15.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.15.attn_output.weight": {
+   "rel_fro": 0.10898576626956227,
+   "cos": 0.9941088857261209,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.15.attn_q_a.weight": {
+   "rel_fro": 0.0006009974025620811,
+   "cos": 0.9999998194010611,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.15.attn_q_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.15.attn_q_b.weight": {
+   "rel_fro": 0.0006146186317898465,
+   "cos": 0.9999998111220307,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.15.attn_v_b.weight": {
+   "rel_fro": 0.0005633185760501317,
+   "cos": 0.9999998413361939,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.15.ffn_down.weight": {
+   "rel_fro": 0.15572836037753723,
+   "cos": 0.9879863167546219,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.15.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.15.ffn_up.weight": {
+   "rel_fro": 0.003416542400033894,
+   "cos": 0.9999941636223274,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.15.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.15.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.15.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.15.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.15.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.15.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.15.inp_gate.weight": {
+   "rel_fro": 0.004480525358621012,
+   "cos": 0.9999899624301927,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.15.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.15.proj.weight": {
+   "rel_fro": 0.003425709503456224,
+   "cos": 0.999994132279063,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.16.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.16.attn_output.weight": {
+   "rel_fro": 0.13326884815744366,
+   "cos": 0.9911928278295463,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.16.attn_qkv.weight": {
+   "rel_fro": 0.000606960360986168,
+   "cos": 0.9999998157996518,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.16.ffn_down.weight": {
+   "rel_fro": 0.13624179463033997,
+   "cos": 0.9907689305447952,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.16.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.16.ffn_up.weight": {
+   "rel_fro": 0.0034405121809280687,
+   "cos": 0.9999940814337545,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.16.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.16.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999996,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.16.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.16.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.16.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.16.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.16.inp_gate.weight": {
+   "rel_fro": 0.0020289288050531064,
+   "cos": 0.9999979417265817,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.16.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.16.proj.weight": {
+   "rel_fro": 0.0032502620468156684,
+   "cos": 0.9999947179230876,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.16.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.16.ssm_dt.bias": {
+   "rel_fro": 1.694018756113626e-08,
+   "cos": 1.0000000000000009,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.16.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.16.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.16.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.17.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.17.attn_output.weight": {
+   "rel_fro": 0.14091754706266804,
+   "cos": 0.9901676455331249,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.17.attn_qkv.weight": {
+   "rel_fro": 0.0006181538943009788,
+   "cos": 0.9999998089431954,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.17.ffn_down.weight": {
+   "rel_fro": 0.10307223820396992,
+   "cos": 0.9947208593385133,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.17.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.17.ffn_up.weight": {
+   "rel_fro": 0.0033475977157895634,
+   "cos": 0.9999943967919128,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.17.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.17.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.17.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.17.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.17.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.17.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.17.inp_gate.weight": {
+   "rel_fro": 0.0034850933188420273,
+   "cos": 0.9999939270506245,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.17.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.17.proj.weight": {
+   "rel_fro": 0.0035598694775878285,
+   "cos": 0.9999936637407634,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.17.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999997,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.17.ssm_dt.bias": {
+   "rel_fro": 3.018853647541681e-08,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.17.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.17.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.17.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.18.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.18.attn_output.weight": {
+   "rel_fro": 0.12853472251914652,
+   "cos": 0.9917958143135519,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.18.attn_qkv.weight": {
+   "rel_fro": 0.0006100968331868168,
+   "cos": 0.9999998138910627,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.18.ffn_down.weight": {
+   "rel_fro": 0.11725641784643069,
+   "cos": 0.993145024555259,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.18.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.18.ffn_up.weight": {
+   "rel_fro": 0.0034729723765010586,
+   "cos": 0.9999939692345329,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.18.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.18.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.18.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.18.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.18.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.18.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.18.inp_gate.weight": {
+   "rel_fro": 0.003240401647079178,
+   "cos": 0.9999947498949588,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.18.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.18.proj.weight": {
+   "rel_fro": 0.0033667589687337474,
+   "cos": 0.9999943324510031,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.18.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.18.ssm_dt.bias": {
+   "rel_fro": 3.189444007332896e-08,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.18.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.18.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.18.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.19.attn_gate.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.19.attn_k_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.19.attn_kv_a_mqa.weight": {
+   "rel_fro": 0.0004028259510413985,
+   "cos": 0.9999999188657889,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.19.attn_kv_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.19.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.19.attn_output.weight": {
+   "rel_fro": 0.09529312479701484,
+   "cos": 0.9954835342860084,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.19.attn_q_a.weight": {
+   "rel_fro": 0.0005007776263608958,
+   "cos": 0.9999998746111349,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.19.attn_q_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.19.attn_q_b.weight": {
+   "rel_fro": 0.0006302281366420457,
+   "cos": 0.9999998014063324,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.19.attn_v_b.weight": {
+   "rel_fro": 0.0006506042716434804,
+   "cos": 0.9999997883571278,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.19.ffn_down.weight": {
+   "rel_fro": 0.11085391136889869,
+   "cos": 0.9938637068984196,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.19.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.19.ffn_up.weight": {
+   "rel_fro": 0.0035078419525237667,
+   "cos": 0.999993847526921,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.19.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.19.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.19.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.19.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.19.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.19.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.19.inp_gate.weight": {
+   "rel_fro": 0.00281145905132912,
+   "cos": 0.9999960478421784,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.19.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.19.proj.weight": {
+   "rel_fro": 0.0033705264903967874,
+   "cos": 0.9999943197742225,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.20.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.20.attn_output.weight": {
+   "rel_fro": 0.1311715818170823,
+   "cos": 0.9914535909010672,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.20.attn_qkv.weight": {
+   "rel_fro": 0.0006458213685553373,
+   "cos": 0.999999791457576,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.20.ffn_down.weight": {
+   "rel_fro": 0.06191706232519282,
+   "cos": 0.9980844921136903,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.20.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.20.ffn_up.weight": {
+   "rel_fro": 0.0035563913942496432,
+   "cos": 0.999993676040842,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.20.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.20.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.20.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999997,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.20.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.20.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.20.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.20.inp_gate.weight": {
+   "rel_fro": 0.003545192690535936,
+   "cos": 0.9999937157867801,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.20.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.20.proj.weight": {
+   "rel_fro": 0.003899584676730814,
+   "cos": 0.9999923966456451,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.20.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.20.ssm_dt.bias": {
+   "rel_fro": 0.0,
+   "cos": 1.000000000000001,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.20.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.20.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.20.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.21.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.21.attn_output.weight": {
+   "rel_fro": 0.15803303200267027,
+   "cos": 0.9876626409479926,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.21.attn_qkv.weight": {
+   "rel_fro": 0.0006328800813035998,
+   "cos": 0.9999997997315759,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.21.ffn_down.weight": {
+   "rel_fro": 0.07220904064745827,
+   "cos": 0.9973968955272853,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.21.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.21.ffn_up.weight": {
+   "rel_fro": 0.003279534233761467,
+   "cos": 0.9999946223279235,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.21.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.21.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.21.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.21.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.21.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.21.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.21.inp_gate.weight": {
+   "rel_fro": 0.003392481359722809,
+   "cos": 0.9999942455406877,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.21.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.21.proj.weight": {
+   "rel_fro": 0.003021570462540366,
+   "cos": 0.9999954350564063,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.21.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.21.ssm_dt.bias": {
+   "rel_fro": 0.0,
+   "cos": 1.000000000000001,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.21.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.21.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.21.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.22.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.22.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.22.attn_qkv.weight": {
+   "rel_fro": 0.000632697162605936,
+   "cos": 0.9999997998472493,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.22.ffn_down.weight": {
+   "rel_fro": 0.0007341194974665447,
+   "cos": 0.9999997305344379,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.22.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.22.ffn_up.weight": {
+   "rel_fro": 0.0032155467058362103,
+   "cos": 0.9999948301296759,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.22.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.22.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.22.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.22.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.22.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.22.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999997,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.22.inp_gate.weight": {
+   "rel_fro": 0.002165067876363862,
+   "cos": 0.9999976562556394,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.22.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.22.proj.weight": {
+   "rel_fro": 0.003052294486483313,
+   "cos": 0.9999953417435697,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.22.ssm_conv1d.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.22.ssm_dt.bias": {
+   "rel_fro": 2.9934746476234e-08,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.22.ssm_f_a.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.22.ssm_f_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.22.ssm_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.23.attn_gate.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.23.attn_k_b.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999998,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.23.attn_kv_a_mqa.weight": {
+   "rel_fro": 0.0006536869149777575,
+   "cos": 0.9999997863466983,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.23.attn_kv_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.23.attn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.23.attn_output.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "Q8_0",
+    "Q8_0"
+   ]
+  },
+  "blk.23.attn_q_a.weight": {
+   "rel_fro": 0.0007326948362633124,
+   "cos": 0.9999997315805399,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.23.attn_q_a_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.23.attn_q_b.weight": {
+   "rel_fro": 0.000593477164479853,
+   "cos": 0.9999998238925288,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.23.attn_v_b.weight": {
+   "rel_fro": 0.0006348722659617931,
+   "cos": 0.999999798469004,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.23.ffn_down.weight": {
+   "rel_fro": 0.0009545965344474841,
+   "cos": 0.9999995443736691,
+   "qtypes": [
+    "Q6_K",
+    "Q6_K"
+   ]
+  },
+  "blk.23.ffn_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 0.9999999999999999,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.23.ffn_up.weight": {
+   "rel_fro": 0.003465201834098972,
+   "cos": 0.9999939961804142,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.23.hc_attn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.23.hc_attn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.23.hc_attn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000004,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.23.hc_ffn_base.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.23.hc_ffn_chart.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ]
+  },
+  "blk.23.hc_ffn_fn.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0000000000000002,
+   "qtypes": [
+    "F16",
+    "F16"
+   ]
+  },
+  "blk.23.inp_gate.weight": {
+   "rel_fro": 0.0031944621094125393,
+   "cos": 0.9999948976966584,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  },
+  "blk.23.post_norm.weight": {
+   "rel_fro": 0.0,
+   "cos": 1.0,
+   "qtypes": [
+    "F32",
+    "F32"
+   ],
+   "norm_gain_rel_change": 0.0
+  },
+  "blk.23.proj.weight": {
+   "rel_fro": 0.004031537952227365,
+   "cos": 0.9999918733368633,
+   "qtypes": [
+    "Q4_K",
+    "Q4_K"
+   ]
+  }
+ }
+}

@@ -17,3 +17,13 @@ Ollama blobs from D:\ollama\models, mapped to names via their manifests.
 | registry.ollama.ai/dolphinlabs/llama3.2-3b-uncensored/latest (model) | 3.42 GB | `cc23113431ecc14fc31b0ae7a85ce70a9476fbee8bc11f90099876d7283b3ddf` |
 | (LM Studio / other) | 2.71 GB | `3907128f3d98bbe33a38b554766aa79be5d989793836824293f713f57f34bc22` |
 | (LM Studio / other) | 5.35 GB | `17bda82d2608ca61b6aca48394f212349ef1515d0d9a2e6edee06619152faa0e` |
+| Aion-1.0-Instruct-2.3B (model.safetensors) | 4.58 GB | `6c779881b539d9074f356964ad3089459e9e837da7649d6f271859135256984e` |
+| Aion-1.0-Instruct-2.3B-AD-Q4_K_M.gguf | 1.58 GB | `29454ae0df38a4fec8200cc38f806af494c759794cb5e41e97754b99cb4f99a5` |
+| Aion-1.0-Instruct-2.3B-Uncensored-AD-Q4_K_M.gguf | 1.58 GB | `f742f8b95dfd0311c8b7ee6273cfe3710904bbed99f1b7bc30bbdfe50a5ad2fd` |
+| Nanbeige_Nanbeige4.2-3B-Q4_K_M.gguf | 2.68 GB | `b92d2e35c9876b0c4bc671996360204f4149d0546c23d5954d5eb3b106c81f24` |
+| Nanbeige4.2-3B-heretic-Q4_K_M.gguf | 2.57 GB | `378da0b45437a851821acd8bd244bca9ef6aea382ed0d2d219e3b60b1e81a8e5` |
+| raon-1-nano-Q4_K_M.gguf | 2.08 GB | `90e9ea83613626457c1249bb85e8d8471dd8874e62b4fa707d40c96737d764b6` |
+| Raon-1-nano-Abliterated-Q4_K_M.gguf | 2.08 GB | `60bc9c2181a3d87a8f93ddad4042aa48458627f2f6bd9631b113edbadf3e1027` |
+| Spark-X2.6-4B-Q4_K_M.gguf | 3.54 GB | `91cb2811aebb47ac916aa619d27d4cdd7f4143106b7917accb8ead4cd7f5cbd9` |
+| Spark-X2.6-4B-abliterated-Q4_K_M.gguf | 2.60 GB | `24fa8bab8b6f3d963b484055947a60fe8ae4117707914ee4e39326b8f836130f` |
+| OrbitLM-1.8B-Thinking (model.safetensors) | 7.42 GB | `b3b254173c611cae237a89181f9d4b04e32e58a2137af73d7ae0efd2729a5d3c` |
